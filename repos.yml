@@ -12,6 +12,8 @@ repos:
     topics: 'github,actions,javascript,node-action'
   - repo: joshjohanning/organization-readme-badge-generator
     topics: 'github,actions,javascript,node-action,org-readme'
+  - repo: joshjohanning/testing-repo-search-functionality
+    topics: 'github,actions,javascript,node-action'
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
     topics: 'github,actions,javascript,node-action,prisma,twistlock'
   
