@@ -35,4 +35,4 @@ jobs:
           delete-branch-on-merge: true
           allow-update-branch: true
           enable-default-code-scanning: true
-          dry-run: true
+          # dry-run: true
