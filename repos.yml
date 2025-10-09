@@ -13,7 +13,7 @@ repos:
   - repo: joshjohanning/organization-readme-badge-generator
     topics: 'github,actions,javascript,node-action,org-readme'
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
-    topics: 'github,actions,javascript,node-action'
+    topics: 'github,actions,javascript,node-action,prisma,twistlock'
   
 # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
@@ -26,8 +26,6 @@ repos:
     topics: 'github,actions,shell,composite-action'
   - repo: joshjohanning/enforce-github-pat-expiration
     topics: 'github,actions,shell,composite-action,administration,personal-access-tokens'
-  - repo: joshjohanning/github-actions-log-warning-checker
-    topics: 'github,actions,shell,composite-action'
   - repo: joshjohanning/revoke-github-ssh-key-sso-authorization
     topics: 'github,actions,shell,composite-action,administration,ssh-keys'
   - repo: joshjohanning/text-to-emoji-action
