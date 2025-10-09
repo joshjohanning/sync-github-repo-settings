@@ -1,0 +1,130 @@
+name: Find Missing Actions Repos
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Run weekly on Mondays at 8 AM UTC
+  workflow_dispatch:
+
+jobs:
+  find-missing-repos:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v5
+      
+      - name: Install js-yaml
+        run: npm install js-yaml
+      
+      - name: Find missing repositories and create issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+            
+            // Read and parse repos.yml
+            const reposYamlContent = fs.readFileSync('./repos.yml', 'utf8');
+            const reposData = yaml.load(reposYamlContent);
+            const existingRepos = new Set(reposData.repos.map(repo => repo.repo));
+            
+            console.log('Existing repositories in repos.yml:');
+            existingRepos.forEach(repo => console.log(`  - ${repo}`));
+            
+            // Search for GitHub Actions repositories
+            const searchQuery = 'topic:github+topic:actions+user:joshjohanning+fork:true';
+            console.log(`\nSearching for repositories with query: ${searchQuery}`);
+            
+            let allRepos = [];
+            let page = 1;
+            let hasMore = true;
+            
+            while (hasMore) {
+              const searchResult = await github.rest.search.repos({
+                q: searchQuery,
+                per_page: 100,
+                page: page
+              });
+              
+              allRepos = allRepos.concat(searchResult.data.items.map(item => item.full_name));
+              
+              if (searchResult.data.items.length < 100) {
+                hasMore = false;
+              } else {
+                page++;
+              }
+            }
+            
+            console.log('\nFound repositories from GitHub search:');
+            allRepos.forEach(repo => console.log(`  - ${repo}`));
+            
+            // Find missing repositories
+            const missingRepos = allRepos.filter(repo => !existingRepos.has(repo));
+            
+            console.log(`\nMissing repositories (${missingRepos.length}):`);
+            missingRepos.forEach(repo => console.log(`  - ${repo}`));
+            
+            if (missingRepos.length === 0) {
+              console.log('\n✅ All repositories are already defined in repos.yml');
+              return;
+            }
+            
+            // Create issues for missing repositories
+            for (const missingRepo of missingRepos) {
+              const issueTitle = `Add ${missingRepo} to repos.yml`;
+              const issueBody = `## Missing Repository
+            
+            The repository \`${missingRepo}\` was found in the GitHub Actions search but is not defined in \`repos.yml\`.
+            
+            ### Action Required
+            - [ ] Add \`${missingRepo}\` to the \`repos.yml\` file
+            - [ ] Determine appropriate topics for the repository
+            - [ ] Add any necessary configuration
+            
+            ### Repository Details
+            - **Full Name**: ${missingRepo}
+            - **Search Query**: \`${searchQuery}\`
+            
+            ### 🤖 Copilot Assistance
+            This is a good candidate for GitHub Copilot assistance. You can ask Copilot to help determine the appropriate topics and category for this repository.
+            
+            This issue was automatically created by the \`find-missing-repos\` workflow.`;
+            
+              try {
+                // Check if an issue already exists for this repository
+                const existingIssues = await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  labels: 'missing-repo'
+                });
+                
+                const existingIssue = existingIssues.data.find(issue => 
+                  issue.title.includes(missingRepo)
+                );
+                
+                if (existingIssue) {
+                  console.log(`📝 Issue already exists for ${missingRepo}: #${existingIssue.number}`);
+                  continue;
+                }
+                
+                // Create the issue
+                const issue = await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: issueTitle,
+                  body: issueBody,
+                  assignees: ['joshjohanning'],
+                  labels: ['missing-repo', 'enhancement', 'copilot-assist']
+                });
+                
+                console.log(`✅ Created issue #${issue.data.number} for ${missingRepo}`);
+                
+              } catch (error) {
+                console.error(`❌ Failed to create issue for ${missingRepo}:`, error.message);
+              }
+            }
+            
+            console.log(`\n🎉 Completed! Created issues for ${missingRepos.length} missing repositories.`);
