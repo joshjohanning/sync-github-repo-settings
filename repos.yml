@@ -2,7 +2,7 @@ repos:
 # node actions (javascript)
   - repo: joshjohanning/approveops
     topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops'
-  - repo: joshjohanning/bulk-github-repo-settings-action
+  - repo: joshjohanning/bulk-github-repo-settings-sync-action
     topics: 'github,actions,javascript,node-action'
   - repo: joshjohanning/bulk-github-repo-sync-action
     topics: 'github,actions,javascript,node-action'
