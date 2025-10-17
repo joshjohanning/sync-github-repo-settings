@@ -36,4 +36,5 @@ jobs:
           delete-branch-on-merge: true
           allow-update-branch: true
           enable-default-code-scanning: true
+          dependabot-pr-title: 'chore: update dependabot.yml'
           dry-run: ${{ github.event_name == 'pull_request' }} # dry run if PR
