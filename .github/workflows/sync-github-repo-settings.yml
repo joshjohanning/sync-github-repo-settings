@@ -10,6 +10,7 @@ on:
 jobs:
   sync-github-repo-settings:
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
     permissions:
       contents: read
 
