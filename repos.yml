@@ -1,41 +1,55 @@
 repos:
   # node actions (javascript)
   - repo: joshjohanning/approveops
-    topics: "github,actions,javascript,node-action,approval,issueops,issue-ops"
+    topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
   - repo: joshjohanning/bulk-github-repo-settings-sync-action
-    topics: "github,actions,javascript,node-action"
+    topics: 'github,actions,javascript,node-action'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
   - repo: joshjohanning/bulk-github-repo-sync-action
-    topics: "github,actions,javascript,node-action"
+    topics: 'github,actions,javascript,node-action'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
   - repo: joshjohanning/nodejs-actions-starter-template
-    topics: "github,actions,javascript,node-action"
+    topics: 'github,actions,javascript,node-action'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
   - repo: joshjohanning/npm-version-check-action
-    topics: "github,actions,javascript,node-action"
+    topics: 'github,actions,javascript,node-action'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
   - repo: joshjohanning/organization-readme-badge-generator
-    topics: "github,actions,javascript,node-action,org-readme"
+    topics: 'github,actions,javascript,node-action,org-readme'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
-    topics: "github,actions,javascript,node-action,prisma,twistlock"
+    topics: 'github,actions,javascript,node-action,prisma,twistlock'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
+  - repo: joshjohanning/publish-github-action
+    topics: 'github,actions,javascript,node-action'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
-    topics: "github,actions,typescript,node-action,advanced-security"
-  - repo: joshjohanning/publish-github-action
-    topics: "github,actions,typescript,node-action"
+    topics: 'github,actions,typescript,node-action,advanced-security'
 
   # composite actions (shell)
   - repo: joshjohanning/actions-ref-linter
-    topics: "github,actions,shell,composite-action"
+    topics: 'github,actions,shell,composite-action'
+    dependabot-yml: './config/dependabot/actions.yml'
   - repo: joshjohanning/enforce-github-pat-expiration
-    topics: "github,actions,shell,composite-action,administration,personal-access-tokens"
+    topics: 'github,actions,shell,composite-action,administration,personal-access-tokens'
+    dependabot-yml: './config/dependabot/actions.yml'
   - repo: joshjohanning/revoke-github-ssh-key-sso-authorization
-    topics: "github,actions,shell,composite-action,administration,ssh-keys"
+    topics: 'github,actions,shell,composite-action,administration,ssh-keys'
+    dependabot-yml: './config/dependabot/actions.yml'
   - repo: joshjohanning/text-to-emoji-action
-    topics: "github,actions,shell,composite-action"
+    topics: 'github,actions,shell,composite-action'
+    dependabot-yml: './config/dependabot/actions.yml'
 
   # composite action (shell and javascript)
   - repo: joshjohanning/azdo_commit_message_validator
-    topics: "github,actions,javascript,shell,azure-devops,composite-action"
+    topics: 'github,actions,javascript,shell,azure-devops,composite-action'
+    dependabot-yml: './config/dependabot/actions.yml'
 
   # other repositories
   - repo: joshjohanning/sync-github-repo-settings
-    topics: "github,github-settings,settings-sync"
+    topics: 'github,github-settings,settings-sync'
+    dependabot-yml: './config/dependabot/actions.yml'
   - repo: joshjohanning/hsa-expense-analyzer-cli

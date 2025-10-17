@@ -2,9 +2,9 @@ name: sync-github-repo-settings
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
   pull_request:
-    branches: ["main"]
+    branches: ['main']
   workflow_dispatch:
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
         uses: joshjohanning/bulk-github-repo-settings-sync-action@v1
         with:
           github-token: ${{ steps.app-token.outputs.token }}
-          repositories-file: "repos.yml"
+          repositories-file: 'repos.yml'
           allow-squash-merge: true
           allow-merge-commit: false
           allow-rebase-merge: false
@@ -36,4 +36,5 @@ jobs:
           delete-branch-on-merge: true
           allow-update-branch: true
           enable-default-code-scanning: true
+          dependabot-pr-title: 'chore: update dependabot.yml'
           dry-run: ${{ github.event_name == 'pull_request' }} # dry run if PR
