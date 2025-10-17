@@ -34,3 +34,8 @@ repos:
 # composite action (shell and javascript)
   - repo: joshjohanning/azdo_commit_message_validator
     topics: 'github,actions,javascript,shell,azure-devops,composite-action'
+
+# other repositories
+  - repo: joshjohanning/sync-github-repo-settings
+    topics: 'github,github-settings,settings-sync'
+  - repo: joshjohanning/hsa-expense-analyzer-cli
