@@ -1,0 +1,45 @@
+# Example configuration showing proposed custom file sync feature
+# This demonstrates how the feature WOULD work once implemented in the action
+
+repos:
+  # Example 1: Sync a CodeQL workflow to repositories
+  - repo: joshjohanning/approveops
+    topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
+    # Proposed: Sync custom files to target repository
+    custom-files:
+      - source: './config/workflows/codeql-analysis.yml'
+        target: '.github/workflows/codeql-analysis.yml'
+        pr-title: 'chore: add CodeQL workflow'
+
+  # Example 2: Sync multiple files to a repository
+  - repo: joshjohanning/bulk-github-repo-settings-sync-action
+    topics: 'github,actions,javascript,node-action'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
+    custom-files:
+      - source: './config/workflows/codeql-analysis.yml'
+        target: '.github/workflows/codeql-analysis.yml'
+        pr-title: 'chore: add CodeQL workflow'
+      - source: './config/workflows/pr-labeler.yml'
+        target: '.github/workflows/pr-labeler.yml'
+        pr-title: 'chore: add PR labeler workflow'
+      - source: './config/issue-templates/bug_report.md'
+        target: '.github/ISSUE_TEMPLATE/bug_report.md'
+        pr-title: 'chore: add bug report template'
+      - source: './config/issue-templates/feature_request.md'
+        target: '.github/ISSUE_TEMPLATE/feature_request.md'
+        pr-title: 'chore: add feature request template'
+
+  # Example 3: Using global file sync (applied to all repos)
+  - repo: joshjohanning/nodejs-actions-starter-template
+    topics: 'github,actions,javascript,node-action'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
+    # Inherits global custom-files configuration
+
+# Alternative syntax option 1: Array of objects
+# custom-files:
+#   - { source: './config/workflows/codeql-analysis.yml', target: '.github/workflows/codeql-analysis.yml' }
+#   - { source: './config/workflows/pr-labeler.yml', target: '.github/workflows/pr-labeler.yml' }
+
+# Alternative syntax option 2: Comma-separated (simpler, less flexible)
+# custom-files: './config/workflows/codeql-analysis.yml:.github/workflows/codeql-analysis.yml,./config/workflows/pr-labeler.yml:.github/workflows/pr-labeler.yml'
