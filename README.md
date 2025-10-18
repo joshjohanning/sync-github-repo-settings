@@ -44,6 +44,8 @@ Example template files are available in the `config/` directory:
 - `config/dependabot/` - Dependabot configuration templates
 - `config/package-json/` - package.json templates for syncing devDependencies and scripts
 
+For detailed documentation on the package.json sync feature, see [PACKAGE_JSON_SYNC.md](PACKAGE_JSON_SYNC.md).
+
 ## Usage
 
 See [.github/workflows/sync-github-repo-settings.yml](.github/workflows/sync-github-repo-settings.yml) for the workflow configuration.
