@@ -43,14 +43,17 @@ The feature needs to be implemented in the action repository. The `IMPLEMENTATIO
 
 4. **Tests** - Add test coverage for the new functionality
 
-### Reference Implementation
+### Implementation Approach
 
-A complete reference implementation has been created in `/tmp/bulk-github-repo-settings-sync-action/` showing all necessary code changes. The implementation follows the exact same pattern as the existing dependabot.yml sync feature for consistency.
+The implementation should follow the exact same pattern as the existing dependabot.yml sync feature for consistency:
 
-Key files modified (in the reference):
-- `action.yml` - New inputs added
-- `src/index.js` - New function and integration added
-- Pattern matches `syncDependabotYml()` but targets `.github/copilot-instructions.md`
+- New function `syncCopilotInstructions()` modeled after `syncDependabotYml()`
+- Same branch naming pattern (`copilot-instructions-sync`)
+- Same PR creation and update logic
+- Full dry-run support
+- Proper error handling
+
+See `IMPLEMENTATION_GUIDE.md` for complete code examples and detailed instructions.
 
 ## How It Will Work (Once Implemented)
 
