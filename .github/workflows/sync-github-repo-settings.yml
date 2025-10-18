@@ -37,4 +37,5 @@ jobs:
           allow-update-branch: true
           enable-default-code-scanning: true
           dependabot-pr-title: 'chore: update dependabot.yml'
+          gitignore-pr-title: 'chore: update .gitignore'
           dry-run: ${{ github.event_name == 'pull_request' }} # dry run if PR
