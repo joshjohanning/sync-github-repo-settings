@@ -1,0 +1,82 @@
+name: 'Bulk GitHub Repository Settings Sync'
+description: 'Update repository settings in bulk for multiple GitHub repositories'
+
+branding:
+  icon: 'settings'
+  color: 'blue'
+
+inputs:
+  github-token:
+    description: 'GitHub token for API access (requires repo scope)'
+    required: true
+  repositories:
+    description: 'Comma-separated list of repositories (owner/repo format) or "all" for all repos in the organization/user'
+    required: false
+  repositories-file:
+    description: 'Path to YAML file containing repository list'
+    required: false
+  owner:
+    description: 'Owner (user or organization) name - required when using "all" for repositories'
+    required: false
+  allow-squash-merge:
+    description: 'Allow squash merging pull requests'
+    required: false
+  allow-merge-commit:
+    description: 'Allow merge commits for pull requests'
+    required: false
+  allow-rebase-merge:
+    description: 'Allow rebase merging pull requests'
+    required: false
+  allow-auto-merge:
+    description: 'Allow auto-merge on pull requests'
+    required: false
+  delete-branch-on-merge:
+    description: 'Automatically delete head branches after pull requests are merged'
+    required: false
+  allow-update-branch:
+    description: 'Always suggest updating pull request branches'
+    required: false
+  enable-default-code-scanning:
+    description: 'Enable default code scanning setup'
+    required: false
+  topics:
+    description: 'Comma-separated list of topics to set on repositories (replaces existing topics)'
+    required: false
+  dependabot-yml:
+    description: 'Path to a dependabot.yml file to sync to .github/dependabot.yml in target repositories'
+    required: false
+  dependabot-pr-title:
+    description: 'Title for pull requests when updating dependabot.yml'
+    required: false
+    default: 'chore: update dependabot.yml'
+  package-json:
+    description: 'Path to a package.json file to sync devDependencies and/or scripts from'
+    required: false
+  sync-dev-dependencies:
+    description: 'Sync devDependencies from package-json to target repositories'
+    required: false
+    default: 'false'
+  sync-scripts:
+    description: 'Sync scripts from package-json to target repositories'
+    required: false
+    default: 'false'
+  package-json-pr-title:
+    description: 'Title for pull requests when updating package.json'
+    required: false
+    default: 'chore: update package.json dependencies and scripts'
+  dry-run:
+    description: 'Preview changes without applying them (logs what would be changed)'
+    required: false
+    default: 'false'
+
+outputs:
+  updated-repositories:
+    description: 'Number of repositories successfully updated'
+  failed-repositories:
+    description: 'Number of repositories that failed to update'
+  results:
+    description: 'JSON array of update results for each repository'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
