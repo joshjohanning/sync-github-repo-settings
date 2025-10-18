@@ -50,6 +50,19 @@ Different dependabot configurations are synced based on repository type:
 
 ## Proposed Feature: Custom File Sync
 
+### Comparison: Current vs Proposed
+
+| Feature | Current (v1.x) | Proposed (v2.x) |
+|---------|---------------|-----------------|
+| **Repository Settings Sync** | ✅ Supported | ✅ Supported |
+| **Dependabot Config Sync** | ✅ Single file only | ✅ Single file only |
+| **Custom Files Sync** | ❌ Not supported | ✅ **Multiple files** |
+| **File Types** | `.github/dependabot.yml` only | Any file (workflows, templates, configs, etc.) |
+| **Files per Repo** | 1 (dependabot.yml) | **1 to N** custom files |
+| **Per-Repo Configuration** | ✅ Via YAML | ✅ Enhanced YAML |
+| **PR Management** | ✅ For dependabot | ✅ **For all files** |
+| **Change Detection** | ✅ Smart detection | ✅ Smart detection |
+
 ### Overview
 
 The ability to sync custom files (like workflows, issue templates, and other configuration files) would allow:
@@ -86,6 +99,40 @@ repos:
       - source: './config/issue-templates/bug_report.md'
         target: '.github/ISSUE_TEMPLATE/bug_report.md'
         pr-title: 'chore: add bug report template'
+```
+
+### How It Works
+
+```
+┌─────────────────────────────────────┐
+│ sync-github-repo-settings (Source) │
+│                                     │
+│  ├── config/                        │
+│  │   ├── workflows/                 │
+│  │   │   ├── codeql-analysis.yml ───┼─┐
+│  │   │   └── pr-labeler.yml ────────┼─┼─┐
+│  │   └── issue-templates/           │ │ │
+│  │       ├── bug_report.md ─────────┼─┼─┼─┐
+│  │       └── feature_request.md ────┼─┼─┼─┼─┐
+│  └── repos.yml                      │ │ │ │ │
+└─────────────────────────────────────┘ │ │ │ │
+                                        │ │ │ │
+        ┌───────────────────────────────┘ │ │ │
+        │       ┌─────────────────────────┘ │ │
+        │       │       ┌───────────────────┘ │
+        │       │       │       ┌─────────────┘
+        ▼       ▼       ▼       ▼
+┌─────────────────────────────────────┐
+│ Target Repository (Destination)     │
+│                                     │
+│  └── .github/                       │
+│      ├── workflows/                 │
+│      │   ├── codeql-analysis.yml    │
+│      │   └── pr-labeler.yml         │
+│      └── ISSUE_TEMPLATE/            │
+│          ├── bug_report.md          │
+│          └── feature_request.md     │
+└─────────────────────────────────────┘
 ```
 
 ### Workflow Input (Proposed)
