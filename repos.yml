@@ -3,50 +3,64 @@ repos:
   - repo: joshjohanning/approveops
     topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    gitignore-file: './config/gitignore/npm-actions.gitignore'
   - repo: joshjohanning/bulk-github-repo-settings-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    gitignore-file: './config/gitignore/npm-actions.gitignore'
   - repo: joshjohanning/bulk-github-repo-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    gitignore-file: './config/gitignore/npm-actions.gitignore'
   - repo: joshjohanning/nodejs-actions-starter-template
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    gitignore-file: './config/gitignore/npm-actions.gitignore'
   - repo: joshjohanning/npm-version-check-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    gitignore-file: './config/gitignore/npm-actions.gitignore'
   - repo: joshjohanning/organization-readme-badge-generator
     topics: 'github,actions,javascript,node-action,org-readme'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    gitignore-file: './config/gitignore/npm-actions.gitignore'
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
     topics: 'github,actions,javascript,node-action,prisma,twistlock'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    gitignore-file: './config/gitignore/npm-actions.gitignore'
   - repo: joshjohanning/publish-github-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    gitignore-file: './config/gitignore/npm-actions.gitignore'
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
     topics: 'github,actions,typescript,node-action,advanced-security'
+    gitignore-file: './config/gitignore/npm-actions.gitignore'
 
   # composite actions (shell)
   - repo: joshjohanning/actions-ref-linter
     topics: 'github,actions,shell,composite-action'
     dependabot-yml: './config/dependabot/actions.yml'
+    gitignore-file: './config/gitignore/actions.gitignore'
   - repo: joshjohanning/enforce-github-pat-expiration
     topics: 'github,actions,shell,composite-action,administration,personal-access-tokens'
     dependabot-yml: './config/dependabot/actions.yml'
+    gitignore-file: './config/gitignore/actions.gitignore'
   - repo: joshjohanning/revoke-github-ssh-key-sso-authorization
     topics: 'github,actions,shell,composite-action,administration,ssh-keys'
     dependabot-yml: './config/dependabot/actions.yml'
+    gitignore-file: './config/gitignore/actions.gitignore'
   - repo: joshjohanning/text-to-emoji-action
     topics: 'github,actions,shell,composite-action'
     dependabot-yml: './config/dependabot/actions.yml'
+    gitignore-file: './config/gitignore/actions.gitignore'
 
   # composite action (shell and javascript)
   - repo: joshjohanning/azdo_commit_message_validator
     topics: 'github,actions,javascript,shell,azure-devops,composite-action'
     dependabot-yml: './config/dependabot/actions.yml'
+    gitignore-file: './config/gitignore/actions.gitignore'
 
   # other repositories
   - repo: joshjohanning/sync-github-repo-settings
