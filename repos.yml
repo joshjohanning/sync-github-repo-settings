@@ -1,29 +1,53 @@
 repos:
-  # node actions (javascript)
+  # node actions (javascript) - with package.json sync
   - repo: joshjohanning/approveops
     topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    package-json: './config/package-json/npm-actions.json'
+    sync-dev-dependencies: true
+    sync-scripts: true
   - repo: joshjohanning/bulk-github-repo-settings-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    package-json: './config/package-json/npm-actions.json'
+    sync-dev-dependencies: true
+    sync-scripts: true
   - repo: joshjohanning/bulk-github-repo-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    package-json: './config/package-json/npm-actions.json'
+    sync-dev-dependencies: true
+    sync-scripts: true
   - repo: joshjohanning/nodejs-actions-starter-template
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    package-json: './config/package-json/npm-actions.json'
+    sync-dev-dependencies: true
+    sync-scripts: true
   - repo: joshjohanning/npm-version-check-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    package-json: './config/package-json/npm-actions.json'
+    sync-dev-dependencies: true
+    sync-scripts: true
   - repo: joshjohanning/organization-readme-badge-generator
     topics: 'github,actions,javascript,node-action,org-readme'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    package-json: './config/package-json/npm-actions.json'
+    sync-dev-dependencies: true
+    sync-scripts: true
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
     topics: 'github,actions,javascript,node-action,prisma,twistlock'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    package-json: './config/package-json/npm-actions.json'
+    sync-dev-dependencies: true
+    sync-scripts: true
   - repo: joshjohanning/publish-github-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    package-json: './config/package-json/npm-actions.json'
+    sync-dev-dependencies: true
+    sync-scripts: true
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action

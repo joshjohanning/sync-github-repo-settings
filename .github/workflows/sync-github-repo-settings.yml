@@ -25,7 +25,7 @@ jobs:
           owner: ${{ github.repository_owner }}
 
       - name: Update Repository Settings
-        uses: joshjohanning/bulk-github-repo-settings-sync-action@v1
+        uses: ./.github/actions/bulk-github-repo-settings-sync-action
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           repositories-file: 'repos.yml'
@@ -37,4 +37,8 @@ jobs:
           allow-update-branch: true
           enable-default-code-scanning: true
           dependabot-pr-title: 'chore: update dependabot.yml'
+          package-json: './config/package-json/npm-actions.json'
+          sync-dev-dependencies: true
+          sync-scripts: true
+          package-json-pr-title: 'chore: sync package.json devDependencies and scripts'
           dry-run: ${{ github.event_name == 'pull_request' }} # dry run if PR
