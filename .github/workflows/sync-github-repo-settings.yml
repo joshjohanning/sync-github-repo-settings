@@ -37,4 +37,6 @@ jobs:
           allow-update-branch: true
           enable-default-code-scanning: true
           dependabot-pr-title: 'chore: update dependabot.yml'
+          # TODO: Uncomment when bulk-github-repo-settings-sync-action supports copilot-instructions
+          # copilot-instructions-pr-title: 'chore: update copilot-instructions.md'
           dry-run: ${{ github.event_name == 'pull_request' }} # dry run if PR

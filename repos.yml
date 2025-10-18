@@ -3,50 +3,64 @@ repos:
   - repo: joshjohanning/approveops
     topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    copilot-instructions-md: './config/copilot/node-action.md'
   - repo: joshjohanning/bulk-github-repo-settings-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    copilot-instructions-md: './config/copilot/node-action.md'
   - repo: joshjohanning/bulk-github-repo-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    copilot-instructions-md: './config/copilot/node-action.md'
   - repo: joshjohanning/nodejs-actions-starter-template
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    copilot-instructions-md: './config/copilot/node-action.md'
   - repo: joshjohanning/npm-version-check-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    copilot-instructions-md: './config/copilot/node-action.md'
   - repo: joshjohanning/organization-readme-badge-generator
     topics: 'github,actions,javascript,node-action,org-readme'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    copilot-instructions-md: './config/copilot/node-action.md'
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
     topics: 'github,actions,javascript,node-action,prisma,twistlock'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    copilot-instructions-md: './config/copilot/node-action.md'
   - repo: joshjohanning/publish-github-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    copilot-instructions-md: './config/copilot/node-action.md'
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
     topics: 'github,actions,typescript,node-action,advanced-security'
+    copilot-instructions-md: './config/copilot/typescript-action.md'
 
   # composite actions (shell)
   - repo: joshjohanning/actions-ref-linter
     topics: 'github,actions,shell,composite-action'
     dependabot-yml: './config/dependabot/actions.yml'
+    copilot-instructions-md: './config/copilot/composite-action.md'
   - repo: joshjohanning/enforce-github-pat-expiration
     topics: 'github,actions,shell,composite-action,administration,personal-access-tokens'
     dependabot-yml: './config/dependabot/actions.yml'
+    copilot-instructions-md: './config/copilot/composite-action.md'
   - repo: joshjohanning/revoke-github-ssh-key-sso-authorization
     topics: 'github,actions,shell,composite-action,administration,ssh-keys'
     dependabot-yml: './config/dependabot/actions.yml'
+    copilot-instructions-md: './config/copilot/composite-action.md'
   - repo: joshjohanning/text-to-emoji-action
     topics: 'github,actions,shell,composite-action'
     dependabot-yml: './config/dependabot/actions.yml'
+    copilot-instructions-md: './config/copilot/composite-action.md'
 
   # composite action (shell and javascript)
   - repo: joshjohanning/azdo_commit_message_validator
     topics: 'github,actions,javascript,shell,azure-devops,composite-action'
     dependabot-yml: './config/dependabot/actions.yml'
+    copilot-instructions-md: './config/copilot/composite-action.md'
 
   # other repositories
   - repo: joshjohanning/sync-github-repo-settings
