@@ -53,6 +53,8 @@ repos:
     topics: 'github,github-settings,settings-sync'
     dependabot-yml: './config/dependabot/actions.yml'
   - repo: joshjohanning/hsa-expense-analyzer-cli
-    dependabot-yml: './config/dependabot/npm-actions.yml'
+    dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
+  - repo: joshjohanning/make-coverage-badge-better
+    dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
   - repo: joshjohanning/github-misc-scripts
     dependabot-yml: './config/dependabot/actions.yml'
