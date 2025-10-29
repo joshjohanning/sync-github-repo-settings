@@ -22,6 +22,7 @@ updates:
       interval: 'weekly'
     commit-message:
       prefix: 'chore'
+    groups:
       eslint:
         patterns:
           - 'eslint*'
