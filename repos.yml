@@ -53,3 +53,5 @@ repos:
     topics: 'github,github-settings,settings-sync'
     dependabot-yml: './config/dependabot/actions.yml'
   - repo: joshjohanning/hsa-expense-analyzer-cli
+  - repo: joshjohanning/github-misc-scripts
+    dependabot-yml: './config/dependabot/actions.yml'
