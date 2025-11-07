@@ -24,6 +24,9 @@ repos:
   - repo: joshjohanning/publish-github-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+  - repo: joshjohanning/ensure-immutable-actions
+    topics: 'github,actions,javascript,node-action'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
