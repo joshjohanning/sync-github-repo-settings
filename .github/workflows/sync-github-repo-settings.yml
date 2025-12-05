@@ -25,7 +25,7 @@ jobs:
           owner: ${{ github.repository_owner }}
 
       - name: Update Repository Settings
-        uses: joshjohanning/bulk-github-repo-settings-sync-action@v1.3.0
+        uses: joshjohanning/bulk-github-repo-settings-sync-action@v1
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           repositories-file: 'repos.yml'
