@@ -3,12 +3,15 @@ repos:
   - repo: joshjohanning/approveops
     topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    immutable-releases: true
   - repo: joshjohanning/bulk-github-repo-settings-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    immutable-releases: true
   - repo: joshjohanning/bulk-github-repo-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    immutable-releases: true
   - repo: joshjohanning/nodejs-actions-starter-template
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -16,19 +19,28 @@ repos:
   - repo: joshjohanning/npm-version-check-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    immutable-releases: true
   - repo: joshjohanning/organization-readme-badge-generator
     topics: 'github,actions,javascript,node-action,org-readme'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    immutable-releases: true
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
     topics: 'github,actions,javascript,node-action,prisma,twistlock'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
+    immutable-releases: true
   - repo: joshjohanning/publish-github-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    immutable-releases: true
   - repo: joshjohanning/ensure-immutable-actions
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    immutable-releases: true
+  - repo: joshjohanning/azdo_commit_message_validator
+    topics: 'github,actions,javascript,node-action,azure-devops,azure-boards'
+    dependabot-yml: './config/dependabot/actions.yml'
+    immutable-releases: true
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
@@ -46,11 +58,6 @@ repos:
     dependabot-yml: './config/dependabot/actions.yml'
   - repo: joshjohanning/text-to-emoji-action
     topics: 'github,actions,shell,composite-action'
-    dependabot-yml: './config/dependabot/actions.yml'
-
-  # composite action (shell and javascript)
-  - repo: joshjohanning/azdo_commit_message_validator
-    topics: 'github,actions,javascript,shell,azure-devops,composite-action'
     dependabot-yml: './config/dependabot/actions.yml'
 
   # other repositories
