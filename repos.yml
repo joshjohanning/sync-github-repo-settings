@@ -16,6 +16,7 @@ repos:
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
+    immutable-releases: true
   - repo: joshjohanning/npm-version-check-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
