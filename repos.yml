@@ -71,10 +71,3 @@ repos:
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
   - repo: joshjohanning/github-misc-scripts
     dependabot-yml: './config/dependabot/actions.yml'
-
-# test pr sync
-  - repo: joshjohanning/testing-pr-template-sync
-    topics: 'github,actions,javascript,node-action'
-    dependabot-yml: './config/dependabot/npm-actions.yml'
-    pull-request-template: './config/pull-request-templates/nodejs-action-pr-template.md'
-    immutable-releases: true
