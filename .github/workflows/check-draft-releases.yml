@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: write
 
     steps:
       - uses: actions/checkout@v6
@@ -33,6 +34,7 @@ jobs:
           repos=$(yq eval '.repos[] | select(.["immutable-releases"] == true) | .repo' repos.yml)
 
           found_drafts=false
+          issue_body=""
 
           for repo in $repos; do
             echo "Checking $repo for draft releases..."
@@ -46,6 +48,10 @@ jobs:
               echo "" >> $GITHUB_STEP_SUMMARY
               echo "$draft_releases" >> $GITHUB_STEP_SUMMARY
               echo "" >> $GITHUB_STEP_SUMMARY
+
+              # Build issue body
+              issue_body+="## [$repo](https://github.com/$repo)"$'\n\n'
+              issue_body+="$draft_releases"$'\n\n'
             fi
           done
 
@@ -55,4 +61,12 @@ jobs:
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "---" >> $GITHUB_STEP_SUMMARY
             echo "⚠️ **Action Required:** The above draft releases should be reviewed and published." >> $GITHUB_STEP_SUMMARY
+
+            # Create issue with draft releases list
+            issue_body="The following draft releases were found and should be reviewed and published:"$'\n\n'"$issue_body"
+            gh issue create \
+              --repo "${{ github.repository }}" \
+              --title "Draft Releases Found - $(date +%Y-%m-%d)" \
+              --body "$issue_body" \
+              --assignee "${{ github.repository_owner }}"
           fi
