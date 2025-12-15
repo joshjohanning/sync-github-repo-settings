@@ -1,0 +1,58 @@
+name: check-draft-releases
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: '0 8 * * *' # Every day at 8am UTC
+
+jobs:
+  check-draft-releases:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Check for draft releases
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          echo "## Draft Releases Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Parse repos.yml for repos with immutable-releases: true
+          repos=$(yq eval '.repos[] | select(.["immutable-releases"] == true) | .repo' repos.yml)
+
+          found_drafts=false
+
+          for repo in $repos; do
+            echo "Checking $repo for draft releases..."
+
+            # Get draft releases for the repo
+            draft_releases=$(gh api "repos/$repo/releases" --jq '.[] | select(.draft == true) | "- [\(.name // .tag_name)](https://github.com/'"$repo"'/releases/tag/\(.tag_name)) (created: \(.created_at | split("T")[0]))"' 2>/dev/null || echo "")
+
+            if [ -n "$draft_releases" ]; then
+              found_drafts=true
+              echo "### [$repo](https://github.com/$repo)" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "$draft_releases" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+          if [ "$found_drafts" = false ]; then
+            echo "✅ No draft releases found in any repositories with immutable-releases enabled." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "---" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ **Action Required:** The above draft releases should be reviewed and published." >> $GITHUB_STEP_SUMMARY
+          fi
