@@ -3,26 +3,32 @@ repos:
   - repo: joshjohanning/approveops
     topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
   - repo: joshjohanning/bulk-github-repo-settings-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
   - repo: joshjohanning/bulk-github-repo-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
   - repo: joshjohanning/nodejs-actions-starter-template
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
+    immutable-releases: true
   - repo: joshjohanning/npm-version-check-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
   - repo: joshjohanning/organization-readme-badge-generator
     topics: 'github,actions,javascript,node-action,org-readme'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
     topics: 'github,actions,javascript,node-action,prisma,twistlock'
@@ -32,14 +38,17 @@ repos:
   - repo: joshjohanning/publish-github-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
   - repo: joshjohanning/ensure-immutable-actions
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
+    rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
   - repo: joshjohanning/azdo_commit_message_validator
     topics: 'github,actions,javascript,node-action,azure-devops,azure-boards'
     dependabot-yml: './config/dependabot/actions.yml'
+    rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
 
   # node actions (typescript)
@@ -70,10 +79,3 @@ repos:
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
   - repo: joshjohanning/github-misc-scripts
     dependabot-yml: './config/dependabot/actions.yml'
-
-# test pr sync
-  - repo: joshjohanning/testing-pr-template-sync
-    topics: 'github,actions,javascript,node-action'
-    dependabot-yml: './config/dependabot/npm-actions.yml'
-    pull-request-template: './config/pull-request-templates/nodejs-action-pr-template.md'
-    immutable-releases: true
