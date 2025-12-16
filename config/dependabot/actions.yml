@@ -12,11 +12,6 @@ updates:
     commit-message:
       prefix: 'ci(deps)'
     groups:
-      joshjohanning-actions:
-        patterns:
-          - 'joshjohanning/*'
       github-actions:
         patterns:
           - '*'
-        exclude-patterns:
-          - 'joshjohanning/*'
