@@ -40,7 +40,7 @@ jobs:
             echo "Checking $repo for draft releases..."
 
             # Get draft releases for the repo
-            draft_releases=$(gh api "repos/$repo/releases" --jq '.[] | select(.draft == true) | "- [\(.name // .tag_name)](https://github.com/'"$repo"'/releases/tag/\(.tag_name)) (created: \(.created_at | split("T")[0]))"' 2>/dev/null || echo "")
+            draft_releases=$(gh api "repos/$repo/releases" --jq '.[] | select(.draft == true) | "- [\(.name // .tag_name)](\(.html_url)) (created: \(.created_at | split("T")[0]))"' 2>/dev/null || echo "")
 
             if [ -n "$draft_releases" ]; then
               found_drafts=true
