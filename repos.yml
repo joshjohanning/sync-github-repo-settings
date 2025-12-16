@@ -5,51 +5,81 @@ repos:
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
   - repo: joshjohanning/bulk-github-repo-settings-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
   - repo: joshjohanning/bulk-github-repo-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
   - repo: joshjohanning/nodejs-actions-starter-template
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
   - repo: joshjohanning/npm-version-check-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
   - repo: joshjohanning/organization-readme-badge-generator
     topics: 'github,actions,javascript,node-action,org-readme'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
     topics: 'github,actions,javascript,node-action,prisma,twistlock'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
   - repo: joshjohanning/publish-github-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
   - repo: joshjohanning/ensure-immutable-actions
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
   - repo: joshjohanning/azdo_commit_message_validator
     topics: 'github,actions,javascript,node-action,azure-devops,azure-boards'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
