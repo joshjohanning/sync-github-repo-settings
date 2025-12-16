@@ -47,7 +47,7 @@ repos:
     immutable-releases: true
   - repo: joshjohanning/azdo_commit_message_validator
     topics: 'github,actions,javascript,node-action,azure-devops,azure-boards'
-    dependabot-yml: './config/dependabot/actions.yml'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
 
