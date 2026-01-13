@@ -113,7 +113,7 @@ repos:
   - repo: joshjohanning/sync-github-repo-settings
     topics: 'github,github-settings,settings-sync'
     dependabot-yml: './config/dependabot/actions.yml'
-    gitignore: './config/gitignore/.gitignore-actions-simple'
+    gitignore: './config/gitignore/.gitignore-simple'
   - repo: joshjohanning/hsa-expense-analyzer-cli
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
     immutable-releases: true
