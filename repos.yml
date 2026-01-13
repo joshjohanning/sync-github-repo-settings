@@ -8,7 +8,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-actions'
   - repo: joshjohanning/bulk-github-repo-settings-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -17,7 +17,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-actions'
   - repo: joshjohanning/bulk-github-repo-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -26,7 +26,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-actions'
   - repo: joshjohanning/nodejs-actions-starter-template
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -35,7 +35,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-actions'
   - repo: joshjohanning/npm-version-check-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -44,7 +44,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-actions'
   - repo: joshjohanning/organization-readme-badge-generator
     topics: 'github,actions,javascript,node-action,org-readme'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -53,7 +53,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-actions'
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
     topics: 'github,actions,javascript,node-action,prisma,twistlock'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -62,7 +62,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-actions'
   - repo: joshjohanning/publish-github-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -71,7 +71,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-actions'
   - repo: joshjohanning/ensure-immutable-actions
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -80,7 +80,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-actions'
   - repo: joshjohanning/azdo_commit_message_validator
     topics: 'github,actions,javascript,node-action,azure-devops,azure-boards'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -89,7 +89,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-actions'
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
@@ -113,14 +113,14 @@ repos:
   - repo: joshjohanning/sync-github-repo-settings
     topics: 'github,github-settings,settings-sync'
     dependabot-yml: './config/dependabot/actions.yml'
-    gitignore: './config/gitignore/.gitignore-simple'
+    gitignore: './config/gitignore/.gitignore-actions-simple'
   - repo: joshjohanning/hsa-expense-analyzer-cli
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
     immutable-releases: true
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-js'
   - repo: joshjohanning/make-coverage-badge-better
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
     immutable-releases: true
-    gitignore: './config/gitignore/.gitignore'
+    gitignore: './config/gitignore/.gitignore-js'
   - repo: joshjohanning/github-misc-scripts
     dependabot-yml: './config/dependabot/actions.yml'
