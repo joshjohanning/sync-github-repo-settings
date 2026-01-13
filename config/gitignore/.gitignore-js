@@ -28,6 +28,3 @@ coverage/
 .DS_Store
 ._*
 Thumbs.db
-
-# Build output in branches
-dist/
