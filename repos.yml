@@ -9,7 +9,7 @@ repos:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
-    copilot-instructions-md: './.github/copilot-instructions-actions.md'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
   - repo: joshjohanning/bulk-github-repo-settings-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -19,7 +19,7 @@ repos:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
-    copilot-instructions-md: './.github/copilot-instructions-actions.md'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
   - repo: joshjohanning/bulk-github-repo-sync-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -29,7 +29,7 @@ repos:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
-    copilot-instructions-md: './.github/copilot-instructions-actions.md'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
   - repo: joshjohanning/nodejs-actions-starter-template
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -39,7 +39,7 @@ repos:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
-    copilot-instructions-md: './.github/copilot-instructions-actions.md'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
   - repo: joshjohanning/npm-version-check-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -49,7 +49,7 @@ repos:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
-    copilot-instructions-md: './.github/copilot-instructions-actions.md'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
   - repo: joshjohanning/organization-readme-badge-generator
     topics: 'github,actions,javascript,node-action,org-readme'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -59,7 +59,7 @@ repos:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
-    copilot-instructions-md: './.github/copilot-instructions-actions.md'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
   - repo: joshjohanning/twistlock-results-json-to-markdown-action
     topics: 'github,actions,javascript,node-action,prisma,twistlock'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -69,7 +69,7 @@ repos:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
-    copilot-instructions-md: './.github/copilot-instructions-actions.md'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
   - repo: joshjohanning/publish-github-action
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -79,7 +79,7 @@ repos:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
-    copilot-instructions-md: './.github/copilot-instructions-actions.md'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
   - repo: joshjohanning/ensure-immutable-actions
     topics: 'github,actions,javascript,node-action'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -89,7 +89,7 @@ repos:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
-    copilot-instructions-md: './.github/copilot-instructions-actions.md'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
   - repo: joshjohanning/azdo_commit_message_validator
     topics: 'github,actions,javascript,node-action,azure-devops,azure-boards'
     dependabot-yml: './config/dependabot/npm-actions.yml'
@@ -99,7 +99,7 @@ repos:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
-    copilot-instructions-md: './.github/copilot-instructions-actions.md'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
