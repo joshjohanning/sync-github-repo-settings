@@ -34,7 +34,7 @@
     "bundle": "npm run format:write && npm run package",
     "ci-test": "NODE_OPTIONS='--experimental-vm-modules' npx jest --coverage",
     "coverage": "npx @joshjohanning/make-coverage-badge-better --label-color '#333' --output-path ./badges/coverage.svg",
-    "format:write": "npx prettier --write .",
+    "format:write": "npx prettier --write . :)",
     "format:check": "npx prettier --check .",
     "lint": "npx eslint .",
     "package": "npx @vercel/ncc build src/index.js -o dist --source-map --license licenses.txt",
