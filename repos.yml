@@ -142,4 +142,4 @@ repos:
     immutable-releases: true
     gitignore: './config/gitignore/.gitignore-js'
   - repo: joshjohanning/github-misc-scripts
-    dependabot-yml: './config/dependabot/actions.yml'
+    dependabot-yml: './config/dependabot/actions-npm-security-grouped.yml'
