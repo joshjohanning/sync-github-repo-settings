@@ -149,3 +149,6 @@ repos:
   - repo: joshjohanning/rpi-scripts
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
   - repo: joshjohanning/joshjohanning.github.io
+    allow-squash-merge: false
+    allow-merge-commit: true
+    allow-rebase-merge: false
