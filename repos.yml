@@ -143,3 +143,19 @@ repos:
     gitignore: './config/gitignore/.gitignore-js'
   - repo: joshjohanning/github-misc-scripts
     dependabot-yml: './config/dependabot/actions-npm-security-grouped.yml'
+  - repo: joshjohanning/envisalink-syslog-listener
+    dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
+    immutable-releases: true
+  - repo: joshjohanning/rpi-scripts # private repo
+    dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
+    code-scanning: false
+    secret-scanning: false
+    secret-scanning-push-protection: false
+  - repo: joshjohanning/joshjohanning.github.io # blog, template managed upstream
+    allow-squash-merge: false
+    allow-merge-commit: true
+    allow-rebase-merge: false
+    allow-auto-merge: false
+    code-scanning: false
+    dependabot-alerts: false
+    dependabot-security-updates: false
