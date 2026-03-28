@@ -155,6 +155,7 @@ repos:
     allow-squash-merge: false
     allow-merge-commit: true
     allow-rebase-merge: false
+    allow-auto-merge: false
     code-scanning: false
     dependabot-alerts: false
     dependabot-security-updates: false
