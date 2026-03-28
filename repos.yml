@@ -143,3 +143,9 @@ repos:
     gitignore: './config/gitignore/.gitignore-js'
   - repo: joshjohanning/github-misc-scripts
     dependabot-yml: './config/dependabot/actions-npm-security-grouped.yml'
+  - repo: joshjohanning/envisalink-syslog-listener
+    dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
+    immutable-releases: true
+  - repo: joshjohanning/rpi-scripts
+    dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
+  - repo: joshjohanning/joshjohanning.github.io
