@@ -151,7 +151,10 @@ repos:
     code-scanning: false
     secret-scanning: false
     secret-scanning-push-protection: false
-  - repo: joshjohanning/joshjohanning.github.io
+  - repo: joshjohanning/joshjohanning.github.io # blog, template managed upstream
     allow-squash-merge: false
     allow-merge-commit: true
     allow-rebase-merge: false
+    code-scanning: false
+    dependabot-alerts: false
+    dependabot-security-updates: false
