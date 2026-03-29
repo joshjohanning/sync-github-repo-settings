@@ -17,6 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: install prettier
+        run: npm install -g prettier
+
+      - name: run prettier
+        run: npx prettier --check .
+
       - uses: actions/create-github-app-token@v3
         id: app-token
         with:
