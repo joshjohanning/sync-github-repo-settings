@@ -114,7 +114,7 @@ These rules prevent CI failures and broken releases. **Never skip them.**
 ### Build Process
 
 - Use `npm run package` to bundle with ncc into `dist/`
-- The `dist/` directory is not committed to the main branch — it is published to **tag-only release branches** (e.g., `v1`, `v2`) by the publish workflow
+- The `dist/` directory is not committed to the main branch — it is built by CI and published for Git tags (for example, release tags like `v1.2.3` or major-version tags like `v1`) by the publish workflow
 - Users consume the action via version tags: `uses: owner/action@v1`
 
 ### Dependencies
