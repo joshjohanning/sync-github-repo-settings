@@ -4,6 +4,8 @@
 
 This is a Node.js GitHub Action template with ESLint, Prettier, Jest testing, and ncc bundling. Follow these guidelines when making changes.
 
+Rules prefixed with **Mandatory** throughout this document are required and must not be skipped.
+
 ## Code Quality Standards
 
 ### ESLint Configuration
@@ -18,7 +20,7 @@ This is a Node.js GitHub Action template with ESLint, Prettier, Jest testing, an
 
 - Code is automatically formatted with Prettier
 - Run `npm run format:write` to format all files
-- Use single quotes for strings unless they contain single quotes
+- Use single quotes for strings unless they contain single quotes, then use template literals
 - Line length limit is enforced by Prettier config
 
 ### Import Organization
@@ -65,7 +67,7 @@ const { functionToTest } = await import('../src/index.js');
 
 ### Input Handling
 
-- Use our custom `getInput()` function for reliable local/CI compatibility
+- Use `core.getInput()` from `@actions/core` for reading action inputs
 - Validate inputs early in the function
 - Provide sensible defaults where appropriate
 - Log input values for debugging (except sensitive data)
@@ -102,18 +104,18 @@ const { functionToTest } = await import('../src/index.js');
 
 - Use `npm run package` to bundle with ncc
 - Don't commit the bundled `dist/` directory (during publishing this gets published to **tag-only**)
-- Run `npm run all` before committing (format, lint, test, package, and badge updating)
+- Mandatory: run `npm run all` before committing (format, lint, test, package, and badge updating). If any step fails, fix the issue before proceeding.
 
 ### Dependency and Version Changes
 
-- When bumping versions or changing dependencies, run `npm install` first to sync the `package-lock.json`, then run `npm run all`
-- Do not skip these steps -- a mismatched `package-lock.json` or failing checks will break CI
+- Mandatory: when bumping versions or changing dependencies, run `npm install` first to sync `package-lock.json`, then run `npm run all`
+- Mandatory: do not skip this sequence - a mismatched `package-lock.json` or failing checks will break CI
 
 ## Documentation Standards
 
 ### README and action.yml Updates
 
-- **Always update `README.md` and `action.yml` when adding, removing, or changing inputs, outputs, or behavior** -- do not forget this step
+- Mandatory: **update `README.md` and `action.yml` when adding, removing, or changing inputs, outputs, or behavior**
 - Keep usage examples in the README in sync with `action.yml`
 - Document all inputs and outputs in both `action.yml` (descriptions/defaults) and `README.md` (usage table/examples)
 - Include local development instructions
@@ -137,7 +139,7 @@ const { functionToTest } = await import('../src/index.js');
 
 ### Version Management
 
-- **Always increment the package.json version for each change**
+- **Mandatory: increment the `package.json` version for code, behavior, and dependency/runtime changes; skip version bumps for docs-only, tests-only, and dev-dependencies-only changes**
 - Use semantic versioning (major.minor.patch)
 - Increment patch for bug fixes, minor for new features, major for breaking changes
 - Update version before creating releases or publishing changes
@@ -159,8 +161,6 @@ const { functionToTest } = await import('../src/index.js');
 ## Performance Considerations
 
 - Avoid unnecessary API calls (respect rate limits)
-- Use efficient data structures for large datasets
-- Handle large datasets with pagination and streaming when possible
 - Cache API responses when appropriate to reduce redundant calls
 
 ## Security Best Practices
