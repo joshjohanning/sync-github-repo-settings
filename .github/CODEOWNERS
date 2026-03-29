@@ -1,0 +1,4 @@
+.github/CODEOWNERS @joshjohanning
+.github/workflows/ @joshjohanning
+repos.yml @joshjohanning
+config/ @joshjohanning
