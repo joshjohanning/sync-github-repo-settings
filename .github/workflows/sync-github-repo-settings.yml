@@ -57,11 +57,10 @@ jobs:
           dry-run: ${{ github.event_name == 'pull_request' }} # dry run if PR
 
   comment-sync-results-on-pr:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs: sync-github-repo-settings
     if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' && always()
     permissions:
-      issues: write
       pull-requests: write
 
     steps:
