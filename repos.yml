@@ -159,3 +159,5 @@ repos:
     code-scanning: false
     dependabot-alerts: false
     dependabot-security-updates: false
+  - repo: joshjohanning/approved-actions-enforcer-app
+    immutable-releases: true
