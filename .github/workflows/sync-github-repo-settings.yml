@@ -61,6 +61,7 @@ jobs:
     needs: sync-github-repo-settings
     if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' && always()
     permissions:
+      issues: write
       pull-requests: write
 
     steps:
@@ -77,6 +78,11 @@ jobs:
         with:
           script: |
             const marker = '<!-- repo-settings-sync-comment -->';
+
+            const updateStepOutcome = process.env.UPDATE_STEP_OUTCOME || '';
+            const jobResult = process.env.JOB_RESULT || '';
+
+            const syncDidRun = ['success', 'failure', 'cancelled'].includes(updateStepOutcome);
 
             const asNumber = (value) => {
               const parsed = Number(value);
@@ -133,26 +139,37 @@ jobs:
               if (hasFailure(item)) failedRepoNames.push(repoName);
             }
 
-            const outcomeEmoji = process.env.JOB_RESULT === 'success' ? '✅' : '⚠️';
+            const outcomeEmoji = jobResult === 'success' ? '✅' : '⚠️';
             const previewLabel = 'Dry-run preview';
+
+            const processedText = syncDidRun ? String(updatedRepositories) : 'not available';
+            const changedText = syncDidRun ? String(changedRepositories) : 'not available';
+            const unchangedText = syncDidRun ? String(unchangedRepositories) : 'not available';
+            const failedText = syncDidRun ? String(failedRepositories) : 'not available';
 
             const lines = [
               marker,
               `### ${outcomeEmoji} Repository settings sync result (${previewLabel})`,
               '',
-              `- Processed repositories: ${updatedRepositories}`,
-              `- Repositories with changes: ${changedRepositories}`,
-              `- Repositories without changes: ${unchangedRepositories}`,
-              `- Repositories with failures: ${failedRepositories}`,
+              `- Processed repositories: ${processedText}`,
+              `- Repositories with changes: ${changedText}`,
+              `- Repositories without changes: ${unchangedText}`,
+              `- Repositories with failures: ${failedText}`,
               '',
             ];
 
-            if (process.env.JOB_RESULT !== 'success') {
+            if (!syncDidRun) {
+              lines.push('The repository sync step did not run because an earlier step failed or the job was interrupted.');
+              lines.push('');
+            } else if (jobResult !== 'success') {
               lines.push('The sync step did not complete successfully. Review the workflow logs for details.');
               lines.push('');
             }
 
-            if (changedRepositories > 0) {
+            if (!syncDidRun) {
+              lines.push('No sync diff is available for this run.');
+              lines.push('');
+            } else if (changedRepositories > 0) {
               lines.push('Changes were detected in this preview.');
               if (changedRepoNames.length > 0) {
                 lines.push('');
