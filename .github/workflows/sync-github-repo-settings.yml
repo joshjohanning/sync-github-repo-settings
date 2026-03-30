@@ -13,7 +13,13 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     permissions:
       contents: read
-      issues: write
+    outputs:
+      updated-repositories: ${{ steps.update-repo-settings.outputs.updated-repositories }}
+      changed-repositories: ${{ steps.update-repo-settings.outputs.changed-repositories }}
+      unchanged-repositories: ${{ steps.update-repo-settings.outputs.unchanged-repositories }}
+      failed-repositories: ${{ steps.update-repo-settings.outputs.failed-repositories }}
+      results: ${{ steps.update-repo-settings.outputs.results }}
+      update-step-outcome: ${{ steps.update-repo-settings.outcome }}
 
     steps:
       - uses: actions/checkout@v6
@@ -50,16 +56,25 @@ jobs:
           dependabot-security-updates: true
           dry-run: ${{ github.event_name == 'pull_request' }} # dry run if PR
 
+  comment-sync-results-on-pr:
+    runs-on: ubuntu-latest
+    needs: sync-github-repo-settings
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' && always()
+    permissions:
+      pull-requests: write
+
+    steps:
+
       - name: Comment PR with sync results
-        if: github.event_name == 'pull_request' && always()
         uses: actions/github-script@v8
         env:
-          UPDATED_REPOSITORIES: ${{ steps.update-repo-settings.outputs.updated-repositories }}
-          CHANGED_REPOSITORIES: ${{ steps.update-repo-settings.outputs.changed-repositories }}
-          UNCHANGED_REPOSITORIES: ${{ steps.update-repo-settings.outputs.unchanged-repositories }}
-          FAILED_REPOSITORIES: ${{ steps.update-repo-settings.outputs.failed-repositories }}
-          RESULTS_JSON: ${{ steps.update-repo-settings.outputs.results }}
-          UPDATE_STEP_OUTCOME: ${{ steps.update-repo-settings.outcome }}
+          UPDATED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.updated-repositories }}
+          CHANGED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.changed-repositories }}
+          UNCHANGED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.unchanged-repositories }}
+          FAILED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.failed-repositories }}
+          RESULTS_JSON: ${{ needs.sync-github-repo-settings.outputs.results }}
+          UPDATE_STEP_OUTCOME: ${{ needs.sync-github-repo-settings.outputs.update-step-outcome }}
+          JOB_RESULT: ${{ needs.sync-github-repo-settings.result }}
         with:
           script: |
             const marker = '<!-- repo-settings-sync-comment -->';
@@ -119,7 +134,7 @@ jobs:
               if (hasFailure(item)) failedRepoNames.push(repoName);
             }
 
-            const outcomeEmoji = process.env.UPDATE_STEP_OUTCOME === 'success' ? '✅' : '⚠️';
+            const outcomeEmoji = process.env.JOB_RESULT === 'success' ? '✅' : '⚠️';
             const previewLabel = 'Dry-run preview';
 
             const lines = [
@@ -133,7 +148,7 @@ jobs:
               '',
             ];
 
-            if (process.env.UPDATE_STEP_OUTCOME !== 'success') {
+            if (process.env.JOB_RESULT !== 'success') {
               lines.push('The sync step did not complete successfully. Review the workflow logs for details.');
               lines.push('');
             }
@@ -177,11 +192,10 @@ jobs:
               per_page: 100,
             });
 
-            const existingComment = comments.find((comment) =>
-              comment.user?.type === 'Bot' && comment.body?.includes(marker)
-            );
+            const existingComments = comments.filter((comment) => comment.body?.includes(marker));
 
-            if (existingComment) {
+            if (existingComments.length > 0) {
+              const existingComment = existingComments[existingComments.length - 1];
               await github.rest.issues.updateComment({
                 owner,
                 repo,
@@ -189,6 +203,16 @@ jobs:
                 body,
               });
               core.info(`Updated existing PR comment ${existingComment.id}`);
+
+              const duplicateComments = existingComments.slice(0, -1);
+              for (const duplicateComment of duplicateComments) {
+                await github.rest.issues.deleteComment({
+                  owner,
+                  repo,
+                  comment_id: duplicateComment.id,
+                });
+                core.info(`Deleted duplicate PR comment ${duplicateComment.id}`);
+              }
             } else {
               const response = await github.rest.issues.createComment({
                 owner,
