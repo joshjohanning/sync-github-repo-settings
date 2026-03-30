@@ -13,6 +13,8 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     permissions:
       contents: read
+      issues: write
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v6
@@ -31,6 +33,7 @@ jobs:
           owner: ${{ github.repository_owner }}
 
       - name: Update Repository Settings
+        id: update-repo-settings
         uses: joshjohanning/bulk-github-repo-settings-sync-action@v2
         with:
           github-token: ${{ steps.app-token.outputs.token }}
@@ -47,3 +50,152 @@ jobs:
           dependabot-alerts: true
           dependabot-security-updates: true
           dry-run: ${{ github.event_name == 'pull_request' }} # dry run if PR
+
+      - name: Comment PR with sync results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v8
+        env:
+          UPDATED_REPOSITORIES: ${{ steps.update-repo-settings.outputs.updated-repositories }}
+          CHANGED_REPOSITORIES: ${{ steps.update-repo-settings.outputs.changed-repositories }}
+          UNCHANGED_REPOSITORIES: ${{ steps.update-repo-settings.outputs.unchanged-repositories }}
+          FAILED_REPOSITORIES: ${{ steps.update-repo-settings.outputs.failed-repositories }}
+          RESULTS_JSON: ${{ steps.update-repo-settings.outputs.results }}
+          UPDATE_STEP_OUTCOME: ${{ steps.update-repo-settings.outcome }}
+        with:
+          script: |
+            const marker = '<!-- repo-settings-sync-comment -->';
+
+            const asNumber = (value) => {
+              const parsed = Number(value);
+              return Number.isFinite(parsed) ? parsed : 0;
+            };
+
+            const updatedRepositories = asNumber(process.env.UPDATED_REPOSITORIES);
+            const changedRepositories = asNumber(process.env.CHANGED_REPOSITORIES);
+            const unchangedRepositories = asNumber(process.env.UNCHANGED_REPOSITORIES);
+            const failedRepositories = asNumber(process.env.FAILED_REPOSITORIES);
+
+            let results = [];
+            try {
+              results = JSON.parse(process.env.RESULTS_JSON || '[]');
+              if (!Array.isArray(results)) {
+                results = [];
+              }
+            } catch {
+              results = [];
+            }
+
+            const normalizeRepoName = (result, index) => {
+              return (
+                result?.repository ||
+                result?.repo ||
+                result?.repositoryName ||
+                result?.name ||
+                result?.full_name ||
+                `repo-${index + 1}`
+              );
+            };
+
+            const hasChange = (result) => {
+              if (typeof result?.changed === 'boolean') return result.changed;
+              if (typeof result?.wouldChange === 'boolean') return result.wouldChange;
+              if (typeof result?.hasChanges === 'boolean') return result.hasChanges;
+              if (Array.isArray(result?.changes)) return result.changes.length > 0;
+              return false;
+            };
+
+            const hasFailure = (result) => {
+              if (typeof result?.failed === 'boolean') return result.failed;
+              if (result?.status && String(result.status).toLowerCase() === 'failed') return true;
+              return Boolean(result?.error);
+            };
+
+            const changedRepoNames = [];
+            const failedRepoNames = [];
+
+            for (let i = 0; i < results.length; i += 1) {
+              const item = results[i];
+              const repoName = normalizeRepoName(item, i);
+              if (hasChange(item)) changedRepoNames.push(repoName);
+              if (hasFailure(item)) failedRepoNames.push(repoName);
+            }
+
+            const outcomeEmoji = process.env.UPDATE_STEP_OUTCOME === 'success' ? '✅' : '⚠️';
+            const previewLabel = 'Dry-run preview';
+
+            const lines = [
+              marker,
+              `### ${outcomeEmoji} Repository settings sync result (${previewLabel})`,
+              '',
+              `- Processed repositories: ${updatedRepositories}`,
+              `- Repositories with changes: ${changedRepositories}`,
+              `- Repositories without changes: ${unchangedRepositories}`,
+              `- Repositories with failures: ${failedRepositories}`,
+              '',
+            ];
+
+            if (process.env.UPDATE_STEP_OUTCOME !== 'success') {
+              lines.push('The sync step did not complete successfully. Review the workflow logs for details.');
+              lines.push('');
+            }
+
+            if (changedRepositories > 0) {
+              lines.push('Changes were detected in this preview.');
+              if (changedRepoNames.length > 0) {
+                lines.push('');
+                lines.push(`Changed repositories: ${changedRepoNames.join(', ')}`);
+              }
+              lines.push('');
+            } else {
+              lines.push('No changes detected. Repository settings are already in sync.');
+              lines.push('');
+            }
+
+            if (failedRepoNames.length > 0) {
+              lines.push(`Failed repositories: ${failedRepoNames.join(', ')}`);
+              lines.push('');
+            }
+
+            if (results.length > 0) {
+              lines.push('<details>');
+              lines.push('<summary>Per-repository results JSON</summary>');
+              lines.push('');
+              lines.push('```json');
+              lines.push(JSON.stringify(results, null, 2));
+              lines.push('```');
+              lines.push('</details>');
+            }
+
+            const body = lines.join('\n');
+
+            const issue_number = context.payload.pull_request.number;
+            const { owner, repo } = context.repo;
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+
+            const existingComment = comments.find((comment) =>
+              comment.user?.type === 'Bot' && comment.body?.includes(marker)
+            );
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existingComment.id,
+                body,
+              });
+              core.info(`Updated existing PR comment ${existingComment.id}`);
+            } else {
+              const response = await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body,
+              });
+              core.info(`Created PR comment ${response.data.id}`);
+            }
