@@ -140,6 +140,7 @@ jobs:
 
             const outcomeEmoji = jobResult === 'success' ? '✅' : '⚠️';
             const previewLabel = 'Dry-run preview';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
             const processedText = syncDidRun ? String(updatedRepositories) : 'not available';
             const changedText = syncDidRun ? String(changedRepositories) : 'not available';
@@ -150,6 +151,7 @@ jobs:
               marker,
               `### ${outcomeEmoji} Repository settings sync result (${previewLabel})`,
               '',
+              `- Workflow run: ${runUrl}`,
               `- Processed repositories: ${processedText}`,
               `- Repositories with changes: ${changedText}`,
               `- Repositories without changes: ${unchangedText}`,
