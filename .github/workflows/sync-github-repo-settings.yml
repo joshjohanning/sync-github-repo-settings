@@ -151,7 +151,6 @@ jobs:
               marker,
               `### ${outcomeEmoji} Repository settings sync result (${previewLabel})`,
               '',
-              `- Workflow run: ${runUrl}`,
               `- Processed repositories: ${processedText}`,
               `- Repositories with changes: ${changedText}`,
               `- Repositories without changes: ${unchangedText}`,
@@ -186,6 +185,9 @@ jobs:
               lines.push(`Failed repositories: ${failedRepoNames.join(', ')}`);
               lines.push('');
             }
+
+            lines.push(`[View workflow run](${runUrl})`);
+            lines.push('');
 
             if (results.length > 0) {
               lines.push('<details>');
