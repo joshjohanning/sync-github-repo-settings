@@ -64,7 +64,6 @@ jobs:
       pull-requests: write
 
     steps:
-
       - name: Comment PR with sync results
         uses: actions/github-script@v8
         env:
