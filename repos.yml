@@ -1,7 +1,7 @@
 repos:
   # node actions (javascript)
   - repo: joshjohanning/approveops
-    topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops'
+    topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops111'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
@@ -12,7 +12,7 @@ repos:
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
     package-json-file: './config/package-json/package.json'
   - repo: joshjohanning/bulk-github-repo-settings-sync-action
-    topics: 'github,actions,javascript,node-action'
+    topics: 'github,actions,javascript,node-action,test'
     dependabot-yml: './config/dependabot/npm-actions.yml'
     rulesets-file: './config/rulesets/actions-ci.json'
     immutable-releases: true
