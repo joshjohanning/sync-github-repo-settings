@@ -109,6 +109,14 @@ repos:
       - ./config/workflows/publish.yml
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
+  - repo: joshjohanning/bulk-github-org-settings-sync-action
+    topics: 'github,actions,javascript,node-action,approval,issueops,issue-ops'
+    dependabot-yml: './config/dependabot/npm-actions.yml'
+    rulesets-file: './config/rulesets/actions-ci.json'
+    immutable-releases: true
+    workflow-files:
+      - ./config/workflows/ci.yml
+      - ./config/workflows/publish.yml
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
