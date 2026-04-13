@@ -65,7 +65,7 @@ jobs:
 
     steps:
       - name: Comment PR with sync results
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           UPDATED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.updated-repositories }}
           CHANGED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.changed-repositories }}
