@@ -39,7 +39,7 @@ jobs:
 
       - name: Update Repository Settings
         id: update-repo-settings
-        uses: joshjohanning/bulk-github-repo-settings-sync-action@v2
+        uses: joshjohanning/bulk-github-repo-settings-sync-action@v2.4.0
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           repositories-file: 'repos.yml'
@@ -65,7 +65,7 @@ jobs:
 
     steps:
       - name: Comment PR with sync results
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           UPDATED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.updated-repositories }}
           CHANGED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.changed-repositories }}
