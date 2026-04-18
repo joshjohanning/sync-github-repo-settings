@@ -117,6 +117,8 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    gitignore: './config/gitignore/.gitignore-actions'
+    copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
 
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
