@@ -143,6 +143,7 @@ repos:
     topics: 'github,github-settings,settings-sync'
     dependabot-yml: './config/dependabot/actions.yml'
     gitignore: './config/gitignore/.gitignore-simple'
+
   - repo: joshjohanning/hsa-expense-analyzer-cli
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
     immutable-releases: true
@@ -171,3 +172,6 @@ repos:
     dependabot-security-updates: false
   - repo: joshjohanning/approved-actions-enforcer-app
     immutable-releases: true
+  - repo: joshjohanning/bulk-github-repo-settings-sync-action-live-tests
+    topics: 'github,github-settings,settings-sync'
+    dependabot-yml: './config/dependabot/actions.yml'
