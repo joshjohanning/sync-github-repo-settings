@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install js-yaml
-        run: npm install js-yaml
+        run: npm install --ignore-scripts --allow-git=none js-yaml
 
       - name: Find missing repositories and create issues
         uses: actions/github-script@v8
@@ -47,9 +47,9 @@ jobs:
                 per_page: 100,
                 page: page
               });
-              
+
               allRepos = allRepos.concat(searchResult.data.items.map(item => item.full_name));
-              
+
               if (searchResult.data.items.length < 100) {
                 hasMore = false;
               } else {
@@ -100,16 +100,16 @@ jobs:
                   state: 'open',
                   labels: 'missing-repo'
                 });
-                
-                const existingIssue = existingIssues.data.find(issue => 
+
+                const existingIssue = existingIssues.data.find(issue =>
                   issue.title.includes(missingRepo)
                 );
-                
+
                 if (existingIssue) {
                   console.log(`📝 Issue already exists for ${missingRepo}: #${existingIssue.number}`);
                   continue;
                 }
-                
+
                 // Create the issue
                 const issue = await github.rest.issues.create({
                   owner: context.repo.owner,
@@ -119,9 +119,9 @@ jobs:
                   assignees: ['joshjohanning'],
                   labels: ['missing-repo', 'enhancement', 'copilot-assist']
                 });
-                
+
                 console.log(`✅ Created issue #${issue.data.number} for ${missingRepo}`);
-                
+
               } catch (error) {
                 console.error(`❌ Failed to create issue for ${missingRepo}:`, error.message);
               }
