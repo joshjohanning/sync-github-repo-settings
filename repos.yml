@@ -174,4 +174,4 @@ repos:
     immutable-releases: true
   - repo: joshjohanning/bulk-github-repo-settings-sync-action-live-tests
     topics: 'github,github-settings,settings-sync'
-    dependabot-yml: './config/dependabot/actions.yml'
+    dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
