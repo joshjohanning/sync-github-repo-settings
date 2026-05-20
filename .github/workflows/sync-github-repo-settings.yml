@@ -156,13 +156,15 @@ jobs:
               if (hasFailure(item)) failedRepoNames.push(repoName);
             }
 
+            const effectivePendingRepositories = pendingRepositories > 0 ? pendingRepositories : pendingRepoNames.length;
+
             const outcomeEmoji = jobResult === 'success' ? '✅' : '⚠️';
             const previewLabel = 'Dry-run preview';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
             const processedText = syncDidRun ? String(updatedRepositories) : 'not available';
             const changedText = syncDidRun ? String(changedRepositories) : 'not available';
-            const pendingText = syncDidRun ? String(pendingRepositories) : 'not available';
+            const pendingText = syncDidRun ? String(effectivePendingRepositories) : 'not available';
             const unchangedText = syncDidRun ? String(unchangedRepositories) : 'not available';
             const failedText = syncDidRun ? String(failedRepositories) : 'not available';
 
@@ -196,7 +198,7 @@ jobs:
                 lines.push(`Changed repositories: ${changedRepoNames.join(', ')}`);
               }
               lines.push('');
-            } else if (pendingRepositories > 0) {
+            } else if (effectivePendingRepositories > 0) {
               lines.push('No new changes detected, but existing sync PRs are pending merge.');
               lines.push('');
             } else {
