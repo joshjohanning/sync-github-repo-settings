@@ -123,48 +123,60 @@ repos:
   # node actions (typescript)
   - repo: joshjohanning/generate-org-repos-sbom-action
     topics: 'github,actions,typescript,node-action,advanced-security'
+    rulesets-file: './config/rulesets/ccr-only.json'
 
   # composite actions (shell)
   - repo: joshjohanning/actions-ref-linter
     topics: 'github,actions,shell,composite-action'
     dependabot-yml: './config/dependabot/actions.yml'
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/enforce-github-pat-expiration
     topics: 'github,actions,shell,composite-action,administration,personal-access-tokens'
     dependabot-yml: './config/dependabot/actions.yml'
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/revoke-github-ssh-key-sso-authorization
     topics: 'github,actions,shell,composite-action,administration,ssh-keys'
     dependabot-yml: './config/dependabot/actions.yml'
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/text-to-emoji-action
     topics: 'github,actions,shell,composite-action'
     dependabot-yml: './config/dependabot/actions.yml'
+    rulesets-file: './config/rulesets/ccr-only.json'
 
   # other repositories
   - repo: joshjohanning/sync-github-repo-settings
     topics: 'github,github-settings,settings-sync,github-config-as-code'
     dependabot-yml: './config/dependabot/actions.yml'
     gitignore: './config/gitignore/.gitignore-simple'
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/sync-github-org-settings
     topics: 'github,github-settings,settings-sync,github-config-as-code'
     dependabot-yml: './config/dependabot/actions.yml'
     gitignore: './config/gitignore/.gitignore-simple'
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/hsa-expense-analyzer-cli
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
     immutable-releases: true
     gitignore: './config/gitignore/.gitignore-js'
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/make-coverage-badge-better
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
     immutable-releases: true
     gitignore: './config/gitignore/.gitignore-js'
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/github-misc-scripts
     dependabot-yml: './config/dependabot/actions-npm-security-grouped.yml'
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/envisalink-syslog-listener
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
     immutable-releases: true
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/rpi-scripts # private repo
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
     code-scanning: false
     secret-scanning: false
     secret-scanning-push-protection: false
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/joshjohanning.github.io # blog, template managed upstream
     allow-squash-merge: false
     allow-merge-commit: true
@@ -175,7 +187,10 @@ repos:
     dependabot-security-updates: false
   - repo: joshjohanning/approved-actions-enforcer-app
     immutable-releases: true
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/bulk-github-repo-settings-sync-action-live-tests
     topics: 'github,github-settings,settings-sync'
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/joshjohanning
+    rulesets-file: './config/rulesets/ccr-only.json'
