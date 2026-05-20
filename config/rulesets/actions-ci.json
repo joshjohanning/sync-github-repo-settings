@@ -1,9 +1,6 @@
 {
-  "id": 9620349,
   "name": "ci",
   "target": "branch",
-  "source_type": "Repository",
-  "source": "joshjohanning/ensure-immutable-actions",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
