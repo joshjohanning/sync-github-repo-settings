@@ -16,6 +16,7 @@ jobs:
     outputs:
       updated-repositories: ${{ steps.update-repo-settings.outputs.updated-repositories }}
       changed-repositories: ${{ steps.update-repo-settings.outputs.changed-repositories }}
+      pending-repositories: ${{ steps.update-repo-settings.outputs.pending-repositories }}
       unchanged-repositories: ${{ steps.update-repo-settings.outputs.unchanged-repositories }}
       failed-repositories: ${{ steps.update-repo-settings.outputs.failed-repositories }}
       results: ${{ steps.update-repo-settings.outputs.results }}
@@ -69,6 +70,7 @@ jobs:
         env:
           UPDATED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.updated-repositories }}
           CHANGED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.changed-repositories }}
+          PENDING_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.pending-repositories }}
           UNCHANGED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.unchanged-repositories }}
           FAILED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.failed-repositories }}
           RESULTS_JSON: ${{ needs.sync-github-repo-settings.outputs.results }}
@@ -90,6 +92,7 @@ jobs:
 
             const updatedRepositories = asNumber(process.env.UPDATED_REPOSITORIES);
             const changedRepositories = asNumber(process.env.CHANGED_REPOSITORIES);
+            const pendingRepositories = asNumber(process.env.PENDING_REPOSITORIES);
             const unchangedRepositories = asNumber(process.env.UNCHANGED_REPOSITORIES);
             const failedRepositories = asNumber(process.env.FAILED_REPOSITORIES);
 
@@ -118,7 +121,20 @@ jobs:
               if (typeof result?.changed === 'boolean') return result.changed;
               if (typeof result?.wouldChange === 'boolean') return result.wouldChange;
               if (typeof result?.hasChanges === 'boolean') return result.hasChanges;
+              if (result?.status && String(result.status).toLowerCase() === 'changed') return true;
+              if (Array.isArray(result?.subResults)) {
+                return result.subResults.some((subResult) => String(subResult?.status || '').toLowerCase() === 'changed');
+              }
               if (Array.isArray(result?.changes)) return result.changes.length > 0;
+              return false;
+            };
+
+            const hasPending = (result) => {
+              if (typeof result?.pending === 'boolean') return result.pending;
+              if (result?.status && String(result.status).toLowerCase() === 'pending') return true;
+              if (Array.isArray(result?.subResults)) {
+                return result.subResults.some((subResult) => String(subResult?.status || '').toLowerCase() === 'pending');
+              }
               return false;
             };
 
@@ -129,14 +145,18 @@ jobs:
             };
 
             const changedRepoNames = [];
+            const pendingRepoNames = [];
             const failedRepoNames = [];
 
             for (let i = 0; i < results.length; i += 1) {
               const item = results[i];
               const repoName = normalizeRepoName(item, i);
               if (hasChange(item)) changedRepoNames.push(repoName);
+              if (hasPending(item)) pendingRepoNames.push(repoName);
               if (hasFailure(item)) failedRepoNames.push(repoName);
             }
+
+            const effectivePendingRepositories = pendingRepositories > 0 ? pendingRepositories : pendingRepoNames.length;
 
             const outcomeEmoji = jobResult === 'success' ? '✅' : '⚠️';
             const previewLabel = 'Dry-run preview';
@@ -144,6 +164,7 @@ jobs:
 
             const processedText = syncDidRun ? String(updatedRepositories) : 'not available';
             const changedText = syncDidRun ? String(changedRepositories) : 'not available';
+            const pendingText = syncDidRun ? String(effectivePendingRepositories) : 'not available';
             const unchangedText = syncDidRun ? String(unchangedRepositories) : 'not available';
             const failedText = syncDidRun ? String(failedRepositories) : 'not available';
 
@@ -153,6 +174,7 @@ jobs:
               '',
               `- Processed repositories: ${processedText}`,
               `- Repositories with changes: ${changedText}`,
+              `- Repositories with pending sync PRs: ${pendingText}`,
               `- Repositories without changes: ${unchangedText}`,
               `- Repositories with failures: ${failedText}`,
               '',
@@ -176,8 +198,16 @@ jobs:
                 lines.push(`Changed repositories: ${changedRepoNames.join(', ')}`);
               }
               lines.push('');
+            } else if (effectivePendingRepositories > 0) {
+              lines.push('No new changes detected, but existing sync PRs are pending merge.');
+              lines.push('');
             } else {
               lines.push('No changes detected. Repository settings are already in sync.');
+              lines.push('');
+            }
+
+            if (pendingRepoNames.length > 0) {
+              lines.push(`Pending sync PR repositories: ${pendingRepoNames.join(', ')}`);
               lines.push('');
             }
 
