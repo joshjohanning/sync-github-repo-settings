@@ -194,3 +194,6 @@ repos:
     rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/joshjohanning
     rulesets-file: './config/rulesets/ccr-only.json'
+  - repo: joshjohanning/todo
+    dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
+    rulesets-file: './config/rulesets/ccr-only.json'
