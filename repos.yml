@@ -196,4 +196,7 @@ repos:
     rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/todo
     dependabot-yml: './config/dependabot/npm-actions-no-octokit.yml'
+    code-scanning: false
+    secret-scanning: false
+    secret-scanning-push-protection: false
     rulesets-file: './config/rulesets/ccr-only.json'
