@@ -23,7 +23,7 @@ jobs:
       update-step-outcome: ${{ steps.update-repo-settings.outcome }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: install prettier
         run: npm install -g prettier
