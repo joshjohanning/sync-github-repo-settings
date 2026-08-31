@@ -64,9 +64,11 @@ jobs:
 
             # Create issue with draft releases list
             issue_body="The following draft releases were found and should be reviewed and published:"$'\n\n'"$issue_body"
-            gh issue create \
+            issue_url=$(gh issue create \
               --repo "${{ github.repository }}" \
               --title "Draft Releases Found - $(date +%Y-%m-%d)" \
-              --body "$issue_body" \
-              --assignee "${{ github.repository_owner }}"
+              --body "$issue_body")
+
+            GH_TOKEN="${{ github.token }}" gh issue edit "$issue_url" \
+              --add-assignee "${{ github.repository_owner }}"
           fi
