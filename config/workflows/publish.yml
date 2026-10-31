@@ -10,6 +10,7 @@ on:
 concurrency:
   group: ${{ github.workflow }}-publish
   cancel-in-progress: false
+  queue: max
 
 permissions:
   contents: write
@@ -32,6 +33,7 @@ jobs:
           publish_minor_version: false
           publish_release_branch: false
           create_release_as_draft: true
+          release_workflow_file: .github/workflows/publish.yml
           draft_release_pr_reminder: true
           comment_on_linked_issues: true
 
