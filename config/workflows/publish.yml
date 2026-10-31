@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -12,6 +14,7 @@ permissions:
 
 jobs:
   publish:
+    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -27,3 +30,17 @@ jobs:
           create_release_as_draft: true
           draft_release_pr_reminder: true
           comment_on_linked_issues: true
+
+  # Draft releases only push the exact version tag (e.g. v2.1.2);
+  # move the floating major tag (e.g. v2) once the release is published
+  promote:
+    if: github.event_name == 'release' && !github.event.release.draft && !github.event.release.prerelease
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: joshjohanning/publish-github-action@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: promote
+          publish_minor_version: false
