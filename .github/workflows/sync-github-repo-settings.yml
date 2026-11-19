@@ -40,10 +40,12 @@ jobs:
 
       - name: Update Repository Settings
         id: update-repo-settings
-        uses: joshjohanning/bulk-github-repo-settings-sync-action@v2
+        # Requires the label-sync release; do not fall back to an older v2.
+        uses: joshjohanning/bulk-github-repo-settings-sync-action@v2.17.0
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           repositories-file: 'repos.yml'
+          labels-file: './config/labels.yml'
           allow-squash-merge: true
           allow-merge-commit: false
           allow-rebase-merge: false
@@ -56,6 +58,28 @@ jobs:
           dependabot-alerts: true
           dependabot-security-updates: true
           dry-run: ${{ github.event_name == 'pull_request' }} # dry run if PR
+
+      - name: Verify label sync results
+        uses: actions/github-script@v9
+        env:
+          RESULTS_JSON: ${{ steps.update-repo-settings.outputs.results }}
+        with:
+          script: |
+            const results = JSON.parse(process.env.RESULTS_JSON);
+            if (!Array.isArray(results) || results.length === 0) {
+              core.setFailed('No repository results were returned; label sync cannot be verified.');
+              return;
+            }
+            const failures = results.filter(result =>
+              result.labelsSync?.success !== true ||
+              !['updated', 'would-update', 'unchanged'].includes(result.labelsSync?.labels)
+            );
+            if (failures.length > 0) {
+              for (const result of failures) {
+                core.error(`${result.repository}: ${result.labelsSync?.error || 'Missing or invalid label sync result'}`);
+              }
+              core.setFailed(`Label sync failed or was not confirmed for ${failures.length} repositories.`);
+            }
 
   comment-sync-results-on-pr:
     runs-on: ubuntu-slim
@@ -190,6 +214,9 @@ jobs:
 
             if (!syncDidRun) {
               lines.push('No sync diff is available for this run.');
+              lines.push('');
+            } else if (jobResult !== 'success') {
+              lines.push('The preview is incomplete or failed verification; repository settings and labels are not confirmed in sync.');
               lines.push('');
             } else if (changedRepositories > 0) {
               lines.push('Changes were detected in this preview.');

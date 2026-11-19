@@ -10,6 +10,18 @@ Each entry in `repos.yml` maps a repository to the template files it should rece
 
 The `npm-actions.yml` and `npm-actions-no-octokit.yml` Dependabot templates allow up to 15 open npm version-update PRs per repository. The security-only npm template keeps version updates disabled.
 
+## Shared Repository Labels
+
+The sync workflow passes [`config/labels.yml`](config/labels.yml) as the global `labels-file` input for every repository in `repos.yml`, including repositories that do not use the publish workflow. It creates the `skip-release` label or updates its color and description, preserving all other labels. Labels are managed directly through the API, not through generated sync PRs. Pull requests here preview label changes without writing; pushes to `main` and manual dispatch apply them.
+
+The GitHub App configured by `APP_CLIENT_ID` and `APP_PRIVATE_KEY` must be installed on **every managed repository** with **Issues: write** or **Pull requests: write** in addition to its existing settings/file-sync permissions. Approve any updated installation permissions before deployment. The job's `contents: read` permission is for `GITHUB_TOKEN`; changing that does not grant the cross-repository App token label access.
+
+The workflow deliberately pins the bulk sync action to **`v2.17.0`**, the first release with `labels-file`, rather than the floating `v2` alias. Merge and release that upstream feature before merging this configuration. Until the exact tag exists, GitHub Actions cannot resolve the action, so this PR's dry-run check will fail before sync starts; rerun it after release. Do not downgrade the pin to bypass that failure: an older action can ignore the unknown input and falsely appear successful.
+
+The workflow also requires a successful `labelsSync` result for every returned repository. Missing results and label API/configuration errors fail the job, even though the action normally treats optional label-sync errors as warnings. Review the per-repository results and workflow logs for failures; a successful PR dry run confirms read access and planned changes, **not** write permission.
+
+Release the publisher's `skip-release` support under `joshjohanning/publish-github-action@v3` as well before relying on the label to suppress publication. Once the bulk action is released and this configuration is merged, confirm the non-dry-run sync succeeds across the full list before using the label. This configuration does not publish upstream releases or create labels outside the sync workflow.
+
 ## Action Release Workflow
 
 [`config/workflows/publish.yml`](config/workflows/publish.yml) builds and creates a draft release with an exact version tag on pushes to `main` or manual dispatch (with `promote_tag` left empty). Floating major tags (such as `v2`) stay on the last published release; minor aliases remain disabled.
@@ -26,6 +38,7 @@ config/
   copilot/                         # Copilot instruction files (.github/copilot-instructions.md)
   dependabot/                      # Dependabot configuration templates
   gitignore/                       # .gitignore templates
+  labels.yml                       # Shared labels created/updated on every managed repository
   package-json/                    # Shared package.json settings (e.g. engines, scripts)
   pull-request-templates/          # PR templates
   rulesets/                        # Repository ruleset JSON files
