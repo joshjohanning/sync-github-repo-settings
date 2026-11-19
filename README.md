@@ -10,6 +10,14 @@ Each entry in `repos.yml` maps a repository to the template files it should rece
 
 The `npm-actions.yml` and `npm-actions-no-octokit.yml` Dependabot templates allow up to 15 open npm version-update PRs per repository. The security-only npm template keeps version updates disabled.
 
+## Action Release Workflow
+
+[`config/workflows/publish.yml`](config/workflows/publish.yml) builds and creates a draft release with an exact version tag on pushes to `main` or manual dispatch (with `promote_tag` left empty). Floating major tags (such as `v2`) stay on the last published release; minor aliases remain disabled.
+
+Publishing a non-draft, non-prerelease release (the `published` and `released` events; `released` also covers a prerelease later changed to a full release) runs a separate, idempotent `mode: promote` job that verifies the live release and updates the major alias to the existing exact-tag bundled commit, without rebuilding or creating another draft. The job checks out the default branch rather than the bundled release commit. Publication and promotion share a concurrency group with cancellation disabled and `queue: max`, allowing up to 100 pending runs without replacing an earlier pending promotion. This template targets GitHub.com; verify larger concurrency queue support before using it on GitHub Enterprise Server.
+
+Release the publisher's updated `mode` and `release_workflow_file` support under `joshjohanning/publish-github-action@v3` **before** syncing this workflow to action repositories. The publish job passes `release_workflow_file: .github/workflows/publish.yml` to preserve this one workflow in new bundled release commits so GitHub can discover the `release` trigger at the release tag; checking out the default branch inside the job cannot fix a missing trigger. Existing draft tags that omit the workflow (and any draft created between the publisher release and this sync) won't trigger promotion when published; after publishing them, run the workflow manually with `promote_tag` set to the release tag (for example, `v2.1.2`).
+
 ## Folder Structure
 
 ```text
