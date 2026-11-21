@@ -7,8 +7,7 @@ on:
     branches: ['main']
   workflow_dispatch:
 
-# Serialize all applying (main) runs so label writes never overlap; with cancel-in-progress off,
-# GitHub keeps only the newest pending run, so the latest main configuration is applied last.
+# Serialize applying runs; a stale queued or rerun commit is rejected before writes.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && 'apply' || github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
@@ -37,6 +36,19 @@ jobs:
 
       - name: run prettier
         run: npx prettier --check .
+
+      - name: Reject stale main configuration
+        if: github.ref == 'refs/heads/main'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { data } = await github.rest.repos.getBranch({
+              ...context.repo,
+              branch: 'main',
+            });
+            if (context.sha !== data.commit.sha) {
+              core.setFailed('This run uses an outdated main commit. Run the workflow again on the current main branch.');
+            }
 
       - uses: actions/create-github-app-token@v3
         id: app-token
@@ -216,8 +228,9 @@ jobs:
             const processedText = syncDidRun ? String(updatedRepositories) : 'not available';
             const changedText = syncDidRun ? String(changedRepositories) : 'not available';
             const pendingText = syncDidRun ? String(effectivePendingRepositories) : 'not available';
-            const unchangedText = syncDidRun ? String(effectiveUnchangedRepositories) : 'not available';
-            const failedText = syncDidRun ? String(effectiveFailedRepositories) : 'not available';
+            const countsAvailable = syncDidRun && results.length > 0;
+            const unchangedText = countsAvailable ? String(effectiveUnchangedRepositories) : 'not available';
+            const failedText = countsAvailable ? String(effectiveFailedRepositories) : 'not available';
 
             const lines = [
               marker,
