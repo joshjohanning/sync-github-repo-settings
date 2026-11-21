@@ -18,6 +18,17 @@ Publishing a non-draft, non-prerelease release (the `published` and `released` e
 
 Release the publisher's updated `mode` and `release_workflow_file` support under `joshjohanning/publish-github-action@v3` **before** syncing this workflow to action repositories. The publish job passes `release_workflow_file: .github/workflows/publish.yml` to preserve this one workflow in new bundled release commits so GitHub can discover the `release` trigger at the release tag; checking out the default branch inside the job cannot fix a missing trigger. Existing draft tags that omit the workflow (and any draft created between the publisher release and this sync) won't trigger promotion when published; after publishing them, run the workflow manually with `promote_tag` set to the release tag (for example, `v2.1.2`).
 
+## Actions Lockfile
+
+[`config/workflows/actions.lock`](config/workflows/actions.lock) is a [workflow dependency lockfile](https://docs.github.com/en/actions/concepts/security/workflow-dependency-lockfiles) for the workflow templates. It pins each `uses:` ref (including floating refs such as `@v2`) to a commit. `repos.yml` syncs it to `.github/workflows/actions.lock` in the same `file-sync` pull request as `ci.yml` and `publish.yml`, so a workflow and its lock entries never land separately. A synced lockfile replaces any lockfile already in a target repository, and workflows that aren't synced (such as `integration-test.yml`) stay unlocked.
+
+Floating refs stay on their locked commit even after the upstream tag moves. Regenerate the lockfile with [`scripts/actions-lock.sh`](scripts/actions-lock.sh) (requires `gh extension install github/gh-actions-lock`), which runs `gh actions-lock --no-narrow` against `config/workflows`:
+
+- After changing any `uses:` in a template: `./scripts/actions-lock.sh`
+- To advance moved floating refs: `./scripts/actions-lock.sh --relock`
+
+The [`actions-lockfile`](.github/workflows/actions-lockfile.yml) workflow runs `--verify` on pull requests that change the templates. It also runs `--relock` weekly and opens a `ci(deps): relock floating action refs` pull request when a floating ref has moved. Dependabot doesn't regenerate this lockfile, because it only updates lockfiles in `.github/workflows`.
+
 ## Folder Structure
 
 ```text
@@ -29,5 +40,7 @@ config/
   package-json/                    # Shared package.json settings (e.g. engines, scripts)
   pull-request-templates/          # PR templates
   rulesets/                        # Repository ruleset JSON files
-  workflows/                       # GitHub Actions workflow files (.github/workflows/)
+  workflows/                       # GitHub Actions workflow files and actions.lock (.github/workflows/)
+scripts/
+  actions-lock.sh                  # Runs gh actions-lock against config/workflows
 ```

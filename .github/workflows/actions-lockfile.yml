@@ -1,0 +1,78 @@
+name: actions-lockfile
+
+on:
+  pull_request:
+    branches: ['main']
+    paths: ['config/workflows/**', 'scripts/actions-lock.sh']
+  schedule:
+    - cron: '30 10 * * 1' # Mondays, after Dependabot's weekly run
+  workflow_dispatch:
+
+env:
+  GH_ACTIONS_LOCK_VERSION: v0.5.1
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Verify config/workflows/actions.lock
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh extension install github/gh-actions-lock --pin "$GH_ACTIONS_LOCK_VERSION"
+          ./scripts/actions-lock.sh --verify
+
+  relock:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          client-id: ${{ vars.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - uses: actions/checkout@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Relock floating refs
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh extension install github/gh-actions-lock --pin "$GH_ACTIONS_LOCK_VERSION"
+          ./scripts/actions-lock.sh --relock
+
+      - name: Open or update relock pull request
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BRANCH: actions-lock/relock
+        run: |
+          if git diff --quiet -- config/workflows; then
+            echo "Lockfile is already current."
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -C "$BRANCH"
+          git add config/workflows/actions.lock
+          git commit -m 'ci(deps): relock floating action refs'
+          git push --force origin "$BRANCH"
+
+          if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
+            printf '%s\n' \
+              'Advances floating refs (for example `@v2`) in `config/workflows/actions.lock` to their current upstream commits.' \
+              '' \
+              'Review each changed `commit` like any dependency bump. Merging syncs the lockfile to every repository that uses these workflows.' \
+              | gh pr create --base main --head "$BRANCH" --title 'ci(deps): relock floating action refs' --body-file -
+          fi
