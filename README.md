@@ -12,7 +12,7 @@ The `npm-actions.yml`, `npm-actions-no-octokit.yml`, and `npm-actions-with-agent
 
 The `*-with-agentic-workflows.yml` templates exclude generated `.github/workflows/*.lock.yml` files from GitHub Actions updates; update them through `gh aw` compilation or upgrades instead.
 
-The `actions-gh-aw-upgrade-composite.yml` template monitors the handwritten composite action in the `gh-aw-upgrade` directory, not generated agentic workflows.
+The `joshjohanning/reusable-workflows` repository maintains its own Dependabot configuration for the handwritten composite action in `gh-aw-upgrade`; that one-off config is not a shared template.
 
 ## Action Release Workflow
 

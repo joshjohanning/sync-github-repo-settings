@@ -198,7 +198,6 @@ repos:
     dependabot-yml: './config/dependabot/actions-with-agentic-workflows.yml'
     rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/reusable-workflows
-    dependabot-yml: './config/dependabot/actions-gh-aw-upgrade-composite.yml'
     rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/todo
     dependabot-yml: './config/dependabot/npm-actions-with-agentic-workflows.yml'
