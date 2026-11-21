@@ -12,6 +12,8 @@ The `npm-actions.yml`, `npm-actions-no-octokit.yml`, and `npm-actions-no-octokit
 
 The agentic workflow templates exclude generated `.github/workflows/*.lock.yml` files from GitHub Actions updates; update them through `gh aw` compilation or upgrades instead.
 
+The `actions-gh-aw-upgrade.yml` template monitors the handwritten composite action in the `gh-aw-upgrade` directory.
+
 ## Action Release Workflow
 
 [`config/workflows/publish.yml`](config/workflows/publish.yml) builds and creates a draft release with an exact version tag on pushes to `main` or manual dispatch (with `promote_tag` left empty). Floating major tags (such as `v2`) stay on the last published release; minor aliases remain disabled.

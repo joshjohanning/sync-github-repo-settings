@@ -197,6 +197,9 @@ repos:
   - repo: joshjohanning/github-changelog-weekly
     dependabot-yml: './config/dependabot/actions-aw.yml'
     rulesets-file: './config/rulesets/ccr-only.json'
+  - repo: joshjohanning/reusable-workflows
+    dependabot-yml: './config/dependabot/actions-gh-aw-upgrade.yml'
+    rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/todo
     dependabot-yml: './config/dependabot/npm-actions-no-octokit-aw.yml'
     code-scanning: false
