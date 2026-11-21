@@ -8,7 +8,7 @@ A GitHub Actions workflow runs the sync action, which reads [`repos.yml`](repos.
 
 Each entry in `repos.yml` maps a repository to the template files it should receive. Adding a new repo or changing a shared config is a single PR in this repo.
 
-The `npm-actions.yml` and `npm-actions-no-octokit.yml` Dependabot templates allow up to 15 open npm version-update PRs per repository. The security-only npm template keeps version updates disabled.
+The `npm-actions.yml`, `npm-actions-no-octokit.yml`, and `npm-actions-no-octokit-aw.yml` Dependabot templates allow up to 15 open npm version-update PRs per repository. The security-only npm template keeps version updates disabled.
 
 ## Action Release Workflow
 
