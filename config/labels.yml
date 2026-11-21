@@ -1,0 +1,4 @@
+labels:
+  - name: skip-release
+    color: 'ededed'
+    description: Skip publishing a release for this pull request
