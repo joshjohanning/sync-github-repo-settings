@@ -8,9 +8,9 @@ A GitHub Actions workflow runs the sync action, which reads [`repos.yml`](repos.
 
 Each entry in `repos.yml` maps a repository to the template files it should receive. Adding a new repo or changing a shared config is a single PR in this repo.
 
-The `npm-actions.yml`, `npm-actions-no-octokit.yml`, and `npm-actions-with-agentic-workflows.yml` Dependabot templates allow up to 15 open npm version-update PRs for the root directory. The agentic workflow template also monitors `/.github/workflows` with Dependabot's default limit of five. It does not group `@actions/*` and `@octokit/*` into the `github` npm group; those packages remain eligible for updates. The security-only npm template keeps version updates disabled.
+The `npm-actions.yml`, `npm-actions-no-octokit.yml`, and `npm-actions-no-octokit-aw.yml` Dependabot templates allow up to 15 open npm version-update PRs for the root directory. The `-aw` template also monitors `/.github/workflows` with Dependabot's default limit of five. It does not group `@actions/*` and `@octokit/*` into the `github` npm group; those packages remain eligible for updates. The security-only npm template keeps version updates disabled.
 
-The `*-with-agentic-workflows.yml` templates exclude generated `.github/workflows/*.lock.yml` files from GitHub Actions updates; update them through `gh aw` compilation or upgrades instead.
+The `*-aw.yml` templates exclude generated `.github/workflows/*.lock.yml` files from GitHub Actions updates; update them through `gh aw` compilation or upgrades instead.
 
 The `joshjohanning/reusable-workflows` repository maintains its own Dependabot configuration for the handwritten composite action in `gh-aw-upgrade`; that one-off config is not a shared template.
 
