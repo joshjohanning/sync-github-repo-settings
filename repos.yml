@@ -195,13 +195,13 @@ repos:
   - repo: joshjohanning/joshjohanning
     rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/github-changelog-weekly
-    dependabot-yml: './config/dependabot/actions-aw.yml'
+    dependabot-yml: './config/dependabot/actions-with-agentic-workflows.yml'
     rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/reusable-workflows
-    dependabot-yml: './config/dependabot/actions-gh-aw-upgrade.yml'
+    dependabot-yml: './config/dependabot/actions-gh-aw-upgrade-composite.yml'
     rulesets-file: './config/rulesets/ccr-only.json'
   - repo: joshjohanning/todo
-    dependabot-yml: './config/dependabot/npm-actions-no-octokit-aw.yml'
+    dependabot-yml: './config/dependabot/npm-actions-with-agentic-workflows.yml'
     code-scanning: false
     secret-scanning: false
     secret-scanning-push-protection: false

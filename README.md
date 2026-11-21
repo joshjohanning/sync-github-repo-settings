@@ -8,11 +8,11 @@ A GitHub Actions workflow runs the sync action, which reads [`repos.yml`](repos.
 
 Each entry in `repos.yml` maps a repository to the template files it should receive. Adding a new repo or changing a shared config is a single PR in this repo.
 
-The `npm-actions.yml`, `npm-actions-no-octokit.yml`, and `npm-actions-no-octokit-aw.yml` Dependabot templates allow up to 15 open npm version-update PRs for the root directory. The AW template also monitors `/.github/workflows` with Dependabot's default limit of five. The security-only npm template keeps version updates disabled.
+The `npm-actions.yml`, `npm-actions-no-octokit.yml`, and `npm-actions-with-agentic-workflows.yml` Dependabot templates allow up to 15 open npm version-update PRs for the root directory. The agentic workflow template also monitors `/.github/workflows` with Dependabot's default limit of five. It does not group `@actions/*` and `@octokit/*` into the `github` npm group; those packages remain eligible for updates. The security-only npm template keeps version updates disabled.
 
-The agentic workflow templates exclude generated `.github/workflows/*.lock.yml` files from GitHub Actions updates; update them through `gh aw` compilation or upgrades instead.
+The `*-with-agentic-workflows.yml` templates exclude generated `.github/workflows/*.lock.yml` files from GitHub Actions updates; update them through `gh aw` compilation or upgrades instead.
 
-The `actions-gh-aw-upgrade.yml` template monitors the handwritten composite action in the `gh-aw-upgrade` directory.
+The `actions-gh-aw-upgrade-composite.yml` template monitors the handwritten composite action in the `gh-aw-upgrade` directory, not generated agentic workflows.
 
 ## Action Release Workflow
 
