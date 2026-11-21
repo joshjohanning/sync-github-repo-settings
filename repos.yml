@@ -8,6 +8,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
     package-json-file: './config/package-json/package.json'
@@ -19,6 +20,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
     package-json-file: './config/package-json/package.json'
@@ -30,6 +32,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
     package-json-file: './config/package-json/package.json'
@@ -41,6 +44,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
     package-json-file: './config/package-json/package.json'
@@ -52,6 +56,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
     package-json-file: './config/package-json/package.json'
@@ -63,6 +68,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
     package-json-file: './config/package-json/package.json'
@@ -74,6 +80,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
     package-json-file: './config/package-json/package.json'
@@ -85,6 +92,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
     package-json-file: './config/package-json/package.json'
@@ -96,6 +104,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
     package-json-file: './config/package-json/package.json'
@@ -107,6 +116,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
   - repo: joshjohanning/bulk-github-org-settings-sync-action
@@ -117,6 +127,7 @@ repos:
     workflow-files:
       - ./config/workflows/ci.yml
       - ./config/workflows/publish.yml
+    labels-file: './config/labels.yml'
     gitignore: './config/gitignore/.gitignore-actions'
     copilot-instructions-md: './config/copilot/copilot-instructions-actions.md'
 

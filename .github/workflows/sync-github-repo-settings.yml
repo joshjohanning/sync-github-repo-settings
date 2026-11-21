@@ -7,6 +7,11 @@ on:
     branches: ['main']
   workflow_dispatch:
 
+# Serialize applying runs; a stale queued or rerun commit is rejected before writes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && 'apply' || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   sync-github-repo-settings:
     runs-on: ubuntu-latest
@@ -21,6 +26,8 @@ jobs:
       failed-repositories: ${{ steps.update-repo-settings.outputs.failed-repositories }}
       results: ${{ steps.update-repo-settings.outputs.results }}
       update-step-outcome: ${{ steps.update-repo-settings.outcome }}
+      verify-labels-outcome: ${{ steps.verify-labels.outcome }}
+      label-repositories: ${{ steps.label-repos.outputs.repos }}
 
     steps:
       - uses: actions/checkout@v7
@@ -31,6 +38,23 @@ jobs:
       - name: run prettier
         run: npx prettier --check .
 
+      - name: Reject stale main configuration
+        if: github.ref == 'refs/heads/main'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { data } = await github.rest.repos.getBranch({
+              ...context.repo,
+              branch: 'main',
+            });
+            if (context.sha !== data.commit.sha) {
+              core.setFailed('This run uses an outdated main commit. Run the workflow again on the current main branch.');
+            }
+
+      - name: List repositories with label sync
+        id: label-repos
+        run: echo "repos=$(yq -o=json -I=0 '[.repos[] | select(has("labels-file")) | .repo]' repos.yml)" >> "$GITHUB_OUTPUT"
+
       - uses: actions/create-github-app-token@v3
         id: app-token
         with:
@@ -40,7 +64,8 @@ jobs:
 
       - name: Update Repository Settings
         id: update-repo-settings
-        uses: joshjohanning/bulk-github-repo-settings-sync-action@v2
+        # Requires the label-sync release; do not fall back to an older v2.
+        uses: joshjohanning/bulk-github-repo-settings-sync-action@v2.17.0
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           repositories-file: 'repos.yml'
@@ -55,7 +80,45 @@ jobs:
           secret-scanning-push-protection: true
           dependabot-alerts: true
           dependabot-security-updates: true
-          dry-run: ${{ github.event_name == 'pull_request' }} # dry run if PR
+          dry-run: ${{ github.ref != 'refs/heads/main' }} # dry run unless applying main (PRs and non-main dispatches)
+
+      - name: Verify label sync results
+        id: verify-labels
+        uses: actions/github-script@v9
+        env:
+          RESULTS_JSON: ${{ steps.update-repo-settings.outputs.results }}
+          LABEL_REPOS: ${{ steps.label-repos.outputs.repos }}
+        with:
+          script: |
+            const expected = JSON.parse(process.env.LABEL_REPOS);
+            const results = JSON.parse(process.env.RESULTS_JSON);
+            if (!Array.isArray(expected) || expected.length === 0) {
+              core.setFailed('No repositories in repos.yml configure labels-file; label sync cannot be verified.');
+              return;
+            }
+            if (!Array.isArray(results)) {
+              core.setFailed('No repository results were returned; label sync cannot be verified.');
+              return;
+            }
+            const byRepo = new Map(results.map(result => [String(result.repository).toLowerCase(), result]));
+            const isOk = sync =>
+              sync?.success === true && ['updated', 'would-update', 'unchanged'].includes(sync?.labels);
+            const failures = [];
+            for (const repo of expected) {
+              const sync = byRepo.get(repo.toLowerCase())?.labelsSync;
+              if (!isOk(sync)) failures.push(`${repo}: ${sync?.error || 'Missing or invalid label sync result'}`);
+            }
+            for (const result of results) {
+              if (result.labelsSync && !isOk(result.labelsSync) && !expected.some(r => r.toLowerCase() === String(result.repository).toLowerCase())) {
+                failures.push(`${result.repository}: ${result.labelsSync.error || 'Invalid label sync result'}`);
+              }
+            }
+            if (failures.length > 0) {
+              failures.forEach(message => core.error(message));
+              core.setFailed(`Label sync failed or was not confirmed for ${failures.length} repositories.`);
+            } else {
+              core.info(`Label sync confirmed for ${expected.length} repositories.`);
+            }
 
   comment-sync-results-on-pr:
     runs-on: ubuntu-slim
@@ -75,12 +138,15 @@ jobs:
           FAILED_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.failed-repositories }}
           RESULTS_JSON: ${{ needs.sync-github-repo-settings.outputs.results }}
           UPDATE_STEP_OUTCOME: ${{ needs.sync-github-repo-settings.outputs.update-step-outcome }}
+          VERIFY_LABELS_OUTCOME: ${{ needs.sync-github-repo-settings.outputs.verify-labels-outcome }}
+          LABEL_REPOSITORIES: ${{ needs.sync-github-repo-settings.outputs.label-repositories }}
           JOB_RESULT: ${{ needs.sync-github-repo-settings.result }}
         with:
           script: |
             const marker = '<!-- repo-settings-sync-comment -->';
 
             const updateStepOutcome = process.env.UPDATE_STEP_OUTCOME || '';
+            const verifyLabelsOutcome = process.env.VERIFY_LABELS_OUTCOME || '';
             const jobResult = process.env.JOB_RESULT || '';
 
             const syncDidRun = ['success', 'failure', 'cancelled'].includes(updateStepOutcome);
@@ -139,24 +205,53 @@ jobs:
             };
 
             const hasFailure = (result) => {
+              if (result?.success === false) return true;
               if (typeof result?.failed === 'boolean') return result.failed;
               if (result?.status && String(result.status).toLowerCase() === 'failed') return true;
               return Boolean(result?.error);
             };
 
+            let labelRepositories = [];
+            try {
+              labelRepositories = JSON.parse(process.env.LABEL_REPOSITORIES || '[]').map((repo) => String(repo).toLowerCase());
+            } catch {
+              labelRepositories = [];
+            }
+
+            // Upstream reports label errors as warnings on otherwise-successful repositories.
+            const hasLabelFailure = (result) => {
+              const expected = labelRepositories.includes(String(result?.repository || '').toLowerCase());
+              if (!expected && !result?.labelsSync) return false;
+              return (
+                result?.labelsSync?.success !== true ||
+                !['updated', 'would-update', 'unchanged'].includes(result?.labelsSync?.labels)
+              );
+            };
+
             const changedRepoNames = [];
             const pendingRepoNames = [];
             const failedRepoNames = [];
+            const labelFailedRepoNames = [];
+            let labelFailuresCountedUnchanged = 0;
 
             for (let i = 0; i < results.length; i += 1) {
               const item = results[i];
               const repoName = normalizeRepoName(item, i);
-              if (hasChange(item)) changedRepoNames.push(repoName);
-              if (hasPending(item)) pendingRepoNames.push(repoName);
-              if (hasFailure(item)) failedRepoNames.push(repoName);
+              const changed = hasChange(item);
+              const pending = hasPending(item);
+              const failed = hasFailure(item);
+              if (changed) changedRepoNames.push(repoName);
+              if (pending) pendingRepoNames.push(repoName);
+              if (hasLabelFailure(item)) {
+                labelFailedRepoNames.push(repoName);
+                if (!failed && !changed && !pending) labelFailuresCountedUnchanged += 1;
+              }
+              if (failed || hasLabelFailure(item)) failedRepoNames.push(repoName);
             }
 
             const effectivePendingRepositories = pendingRepositories > 0 ? pendingRepositories : pendingRepoNames.length;
+            const effectiveFailedRepositories = Math.max(failedRepositories, failedRepoNames.length);
+            const effectiveUnchangedRepositories = Math.max(0, unchangedRepositories - labelFailuresCountedUnchanged);
 
             const outcomeEmoji = jobResult === 'success' ? '✅' : '⚠️';
             const previewLabel = 'Dry-run preview';
@@ -165,8 +260,9 @@ jobs:
             const processedText = syncDidRun ? String(updatedRepositories) : 'not available';
             const changedText = syncDidRun ? String(changedRepositories) : 'not available';
             const pendingText = syncDidRun ? String(effectivePendingRepositories) : 'not available';
-            const unchangedText = syncDidRun ? String(unchangedRepositories) : 'not available';
-            const failedText = syncDidRun ? String(failedRepositories) : 'not available';
+            const countsAvailable = syncDidRun && results.length > 0;
+            const unchangedText = countsAvailable ? String(effectiveUnchangedRepositories) : 'not available';
+            const failedText = countsAvailable ? String(effectiveFailedRepositories) : 'not available';
 
             const lines = [
               marker,
@@ -183,13 +279,26 @@ jobs:
             if (!syncDidRun) {
               lines.push('The repository sync step did not run because an earlier step failed or the job was interrupted.');
               lines.push('');
-            } else if (jobResult !== 'success') {
+            } else if (updateStepOutcome !== 'success') {
               lines.push('The sync step did not complete successfully. Review the workflow logs for details.');
+              lines.push('');
+            } else if (verifyLabelsOutcome !== 'success') {
+              lines.push('The sync step completed, but label sync verification failed.');
+              if (labelFailedRepoNames.length > 0) {
+                lines.push('');
+                lines.push(`Label sync failed or unconfirmed: ${labelFailedRepoNames.join(', ')}`);
+              }
+              lines.push('');
+            } else if (jobResult !== 'success') {
+              lines.push('The job did not complete successfully. Review the workflow logs for details.');
               lines.push('');
             }
 
             if (!syncDidRun) {
               lines.push('No sync diff is available for this run.');
+              lines.push('');
+            } else if (jobResult !== 'success') {
+              lines.push('The preview is incomplete or failed verification; repository settings and labels are not confirmed in sync.');
               lines.push('');
             } else if (changedRepositories > 0) {
               lines.push('Changes were detected in this preview.');
