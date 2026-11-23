@@ -68,7 +68,7 @@ async function runComment({ results = [], env = {}, comments = [] } = {}) {
   return calls;
 }
 
-test('comments include the action summary table, detailed changes, and linked sync PRs', async () => {
+test('comments include the action summary table, detailed changes, and code-formatted sync PRs', async () => {
   const results = [
     {
       repository: 'octo/changed',
@@ -132,13 +132,11 @@ test('comments include the action summary table, detailed changes, and linked sy
   assert.ok(body.includes('| Repository | Status | Details |'));
   assert.ok(
     body.includes(
-      '| octo/changed | ✅ Changed | Would update existing [PR #12](<https://github.com/octo/changed/pull/12>) for dependabot.yml; Set &lt;review&gt; &#124; workflow<br>next |'
+      '| octo/changed | ✅ Changed | Would update existing PR `octo/changed#12` for dependabot.yml; Set &lt;review&gt; &#124; workflow<br>next |'
     )
   );
   assert.ok(
-    body.includes(
-      '| octo/pending | 🔄 Pending | workflow files [PR #34](<https://github.com/octo/pending/pull/34>) up-to-date (pending merge) |'
-    )
+    body.includes('| octo/pending | 🔄 Pending | workflow files PR `octo/pending#34` up-to-date (pending merge) |')
   );
   assert.ok(
     body.includes(
@@ -149,6 +147,7 @@ test('comments include the action summary table, detailed changes, and linked sy
   assert.ok(body.includes('| octo/archived | ⏭️ Skipped | Repository is archived |'));
   assert.ok(body.includes('| octo/failed | ❌ Failed | Access denied &#124; check token |'));
   assert.ok(body.includes('<summary>Per-repository results JSON</summary>'));
+  assert.ok(!body.includes('[PR #'));
 });
 
 test('label verification failures are shown as failures even when the action reports warnings', async () => {
@@ -207,26 +206,28 @@ test('missing sync results keep the failure message and update the existing comm
   );
 });
 
-test('unsafe PR URLs are not linked to the wrong repository', async () => {
-  const calls = await runComment({
-    results: [
-      {
-        repository: 'octo/target',
-        success: true,
-        subResults: [
-          {
-            kind: 'workflow-files-sync',
-            status: 'pending',
-            syncStatus: 'pr-up-to-date',
-            prNumber: 42,
-            prUrl: 'javascript:alert(1)'
-          }
-        ]
-      }
-    ],
-    env: { UPDATED_REPOSITORIES: '1', PENDING_REPOSITORIES: '1' }
-  });
-  assert.ok(calls.created[0].body.includes('workflow files PR octo/target#42 up-to-date (pending merge)'));
-  assert.ok(!calls.created[0].body.includes('](<javascript:'));
-  assert.equal(calls.warnings.length, 1);
+test('sync PR references stay code-formatted regardless of URL availability or validity', async () => {
+  for (const prUrl of [undefined, 'javascript:alert(1)', 'not a URL']) {
+    const calls = await runComment({
+      results: [
+        {
+          repository: 'octo/target',
+          success: true,
+          subResults: [
+            {
+              kind: 'workflow-files-sync',
+              status: 'pending',
+              syncStatus: 'pr-up-to-date',
+              prNumber: 42,
+              prUrl
+            }
+          ]
+        }
+      ],
+      env: { UPDATED_REPOSITORIES: '1', PENDING_REPOSITORIES: '1' }
+    });
+    assert.ok(calls.created[0].body.includes('workflow files PR `octo/target#42` up-to-date (pending merge)'));
+    assert.ok(!calls.created[0].body.includes('](<javascript:'));
+    assert.equal(calls.warnings.length, 0);
+  }
 });

@@ -8,7 +8,7 @@ A GitHub Actions workflow runs the sync action, which reads [`repos.yml`](repos.
 
 Each entry in `repos.yml` maps a repository to the template files it should receive. Adding a new repo or changing a shared config is a single PR in this repo.
 
-Pull request comments include a per-repository status and details table like the Actions job summary, links to sync PRs when available, and the full results JSON. Label verification failures appear as failures in the comment even when the action reports them as warnings.
+Pull request comments include a per-repository status and details table like the Actions job summary, code-formatted sync PR references (such as PR `owner/repo#123`), and the full results JSON. These references are not hyperlinks, avoiding cross-reference notifications on the sync PRs; Actions job summary links are unchanged. Label verification failures appear as failures in the comment even when the action reports them as warnings.
 
 The `npm-actions.yml`, `npm-actions-no-octokit.yml`, and `npm-actions-no-octokit-aw.yml` Dependabot templates allow up to 15 open npm version-update PRs for the root directory. The `-aw` template also monitors `/.github/workflows` with Dependabot's default limit of five. It does not group `@actions/*` and `@octokit/*` into the `github` npm group; those packages remain eligible for updates. The security-only npm template keeps version updates disabled.
 
