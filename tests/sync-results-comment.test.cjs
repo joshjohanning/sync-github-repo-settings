@@ -136,9 +136,7 @@ test('comments include the action summary table, detailed changes, and code-form
     )
   );
   assert.ok(
-    body.includes(
-      '| octo/pending | 🔄 Pending | workflow files PR `octo/pending#34` up-to-date (pending merge) |'
-    )
+    body.includes('| octo/pending | 🔄 Pending | workflow files PR `octo/pending#34` up-to-date (pending merge) |')
   );
   assert.ok(
     body.includes(
