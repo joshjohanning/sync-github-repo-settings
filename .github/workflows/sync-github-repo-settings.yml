@@ -268,21 +268,7 @@ jobs:
                 return `PR ${escapeTableText(number)}`;
               }
 
-              const fallback = `PR ${escapeTableText(repoName)}#${number}`;
-              if (!subResult.prUrl) return fallback;
-
-              let url;
-              try {
-                url = new URL(subResult.prUrl);
-              } catch {
-                core.warning(`Invalid pull request URL in sync results for ${repoName}.`);
-                return fallback;
-              }
-              if (url.protocol !== 'https:') {
-                core.warning(`Unsupported pull request URL in sync results for ${repoName}.`);
-                return fallback;
-              }
-              return `[PR #${number}](<${url.href.replace(/\|/g, '%7C')}>)`;
+              return `PR \`${escapeTableText(repoName).replace(/`/g, '&#96;')}#${number}\``;
             };
 
             const formatSubResult = (subResult, repoName) => {
